@@ -8,7 +8,9 @@
   "dependencies": {
     "async": "0.1.22",
     "express": "3.x",
-    "mongoskin": "0.4.4"
+    "mongoskin": "0.4.4",
+    "swig": "0.13.2",
+    "consolidate": "0.5.0"
   },
   "engines": {
     "node": "0.8.x"

@@ -1,14 +1,26 @@
 var express = require('express'),
     config = require('./config'),
     mongo = require('mongoskin'),
+    http = require('http'),
+    path = require('path'),
     db = mongo.db(config.db.url,{safe:true}),
-	   app = express();
+    consolidate = require('consolidate')
+	   app = express(),
+     AdminController = require('./controller/AdminController').AdminController,
+     CanteenController = require('./controller/CanteenController').CanteenController
+     ;
 
-app.get('/',function(req,res){
-  db.collection('test').insert({test:1},{safe:true},function(err){if(err)console.log(err);});
-	res.write("Hello world!");
-	res.end();
+
+app.configure(function(){
+  app.set('port', 3000);
+  app.set('views', __dirname + '/views');
+  app.engine('.html', consolidate.swig);
+  require('swig').init({ root: path.join(__dirname, 'views'), allowErrors: true,cache:false });
+  app.set('view engine', 'html');
+  app.use(express.static(path.join(__dirname, 'static')));
 });
 
-app.listen(3000);
-console.log("Server listening on port 3000");
+
+app.get('/',CanteenController.index);
+app.listen(app.get('port'));
+console.log("Server listening on port " + app.get('port'));
