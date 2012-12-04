@@ -30,8 +30,9 @@ Dish.find = function(query,outerCallback){
 
 Dish.findById = function(id,outerCallback){
 	if(typeof(id) == 'string'){
-		id = 
+		id = new ObjectID(id);
 	}
+	db.Dish.findOne({_id:id},outerCallback);
 }
 Dish.prototype.update = function(outerCallback){
 	db.Dish.update({_id:this.data._id},this.data,{safe:true},outerCallback);
