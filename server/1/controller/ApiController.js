@@ -1,5 +1,7 @@
 var FileHandler = require('../model/FileHandler').FileHandler
-
+	Dish = require('../model/Dish').Dish,
+	Canteen = require('../model/Canteen').Canteen,
+	async = require('async')
 ;
 
 var ApiController = exports.ApiController = function(){}
@@ -13,5 +15,10 @@ ApiController.getImage = function(req,res){
 }
 
 ApiController.randomDish = function(req,res){
-	
+	async.waterfall([
+			
+		],
+		function(err){
+
+		});
 }

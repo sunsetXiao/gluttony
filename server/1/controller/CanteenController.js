@@ -1,5 +1,8 @@
 var Canteen = require("../model/Canteen").Canteen,
-	Dish = require("../model/Dish").Dish
+	Dish = require("../model/Dish").Dish,
+	FileHandler = require('../model/FileHandler').FileHandler,
+	async = require('async'),
+	config = require('../config')
 	;
 
 var CanteenController = exports.CanteenController = function(){};
@@ -11,16 +14,34 @@ CanteenController.index = function(req,res){
 	});
 }
 
+
 CanteenController.create = function(req,res){
 	var data = req.body;
-	Canteen.create(data,function(err,count){
-		if(err){
-			res.send(500);
-		}
-		else{
-			res.send(200);
-		}
+	var f = new FileHandler();
+	async.waterfall([
+			function(waterfallCallback){
+				if(req.files.canteenPreview){
+					f.saveFromFile(req.files.canteenPreview.path,function(err,imgId){
+						waterfallCallback(err,config.gridfs + imgId);
+					});
+				}else{
+					waterfallCallback(null,null);
+				}
+			},
+			function(previewUrl,waterfallCallback){
+				data.previewUrl = previewUrl;
+				Canteen.create(data,function(err,count){
+					waterfallCallback(err);
+				});
+			}
+		],function(err){
+			if(err){
+				res.send(500);
+			}else{
+				res.send(200);
+			}
 	});
+	
 }
 
 CanteenController.canteen = function(req,res){

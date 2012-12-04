@@ -13,6 +13,9 @@ var Dish = exports.Dish = function(data){
 
 **/
 Dish.create = function(data,outerCallback){
+	if(typeof(data.canteenId) == "string"){
+		data.canteenId = new ObjectID(data.canteenId);
+	}
 	db.Dish.insert({
 		canteenId:data.canteenId,
 		name:data.dishName,

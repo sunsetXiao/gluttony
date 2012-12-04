@@ -17,6 +17,7 @@ Canteen.create = function(data,outerCallback){
 	db.collection('Canteen').insert({
 		name:data.canteenName,
 		description:data.canteenDescription,
+		previewUrl:data.previewUrl,
 		rates:[],
 		comments:[]
 	},{safe:true},outerCallback);

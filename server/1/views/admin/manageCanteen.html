@@ -17,7 +17,7 @@
 	{% endfor %}
 </table>
 </div>
-<form class="form-horizontal">
+<form class="form-horizontal" id="createCanteenForm" action="/canteens/" method="post">
 	<legend>新建食堂</legend>
 	<div class="control-group">
 		<label class="control-label">食堂名称</label>
@@ -32,26 +32,26 @@
 		</div>
 	</div>
 	<div class="control-group">
+		<label class="control-label">描述图片</label>
 		<div class="controls">
-			<a class="btn" id="createCanteenSubmit">新建>></a>
+			<input type="file" name="canteenPreview" />
+		</div>
+	</div>
+	<div class="control-group">
+		<div class="controls">
+			<input class="btn" type="submit" value="新建>>">
 		</div>
 	</div>
 </form>
 
 <script type="text/javascript">
-$("#createCanteenSubmit").click(function(){
-	var data = {};
-	data.canteenName = $("input[name=canteenName]").val();
-	data.canteenDescription = $("textarea[name=canteenDescription]").val();
-	console.log(data);
-	AdminController.createCanteen(data,function(result){
-		if(result.OK){
-			$("input[name=canteenName]").val("");
-			$("textarea[name=canteenDescription]").val("");
-		}
-		else{
+$("#createCanteenForm").ajaxForm({
+	success:function(){
+		Util.notifySuccess();
+	},
+	error:function(){
 
-		}
-	});
-});
+	},
+	clearForm:true
+})
 </script>
