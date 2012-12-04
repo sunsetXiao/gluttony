@@ -7,7 +7,45 @@
 
 
 {% endblock %}
+
+{% block extra_js %}
+<script type="text/javascript">
+$("#bannerCarousel").carousel();
+</script>
+{% endblock %}
 {% block content %}
+<div class="inner">
+  <div class="row">
+    <div class="span4">
+      <h1>餐厅列表<h1>
+    </div>
+  </div>
+  <div class="row-fluid">
+    <div class="span12">
+      <div id="bannerCarousel" class="carousel slide">
+        <div class="carousel-inner">
+          <div class="item active">
+            <a href="/topic/iPhone/"><img src="/img/poster_sample1.jpg" alt=""></a>
+            <div class="carousel-caption">
+            <a href="/topic/iPhone/"><h4>热门话题：iPhone</h4></a>
+            <p>iPhone 5 日前已在第一批上市国家中上市，不少消费者也也在第一时间拿到了心仪已久的iPhone5。尽管发布之初因为与传言曝光内容大幅相同而饱受指责，iPhone 5 还是受到了苹果迷们的疯狂追捧——首日斩获 200 万预定量，一周销量突破 500 万。</p>
+            </div>
+          </div>
+          <div class="item">
+            <a href="/topic/音乐/"><img src="/img/poster_sample2.jpg" alt=""></a>
+            <div class="carousel-caption">
+              <a href="/topic/音乐/"><h4>热门话题：音乐</h4></a>
+              <p>随着《中国好声音》的收视暴涨，其学员和导师也是身价猛增，知名度更是猛涨。近日，《中国好声音》更是进入到了导师终极考核的白热化阶段，在刘欢组终极考核赛中，吉克隽逸凭借出色的发挥，荣登年度四强。</p>
+            </div>
+          </div>
+        </div>
+        <a class="left carousel-control" href="#bannerCarousel" data-slide="prev">&lsaquo;</a>
+        <a class="right carousel-control" href="#bannerCarousel" data-slide="next">&rsaquo;</a>
+      </div>
+    </div>
+  </div>
+</div>
+<!--
           <div class="hero-unit">
             <h1>清华吃货圈</h1>
             <p>欢迎来到清华吃货圈——我们专注于打造清华饮食网络平台，为清华人提供校内最新的饮食资讯</p>
@@ -17,14 +55,14 @@
         	<div class="span4">
               <h2>最新的饮食资讯</h2>
               <p>在这里，你可以方便地搜索查看清华校内各大食堂、餐饮店的食物信息，第一时间了解新品资讯</p>
-            </div><!--/span-->
+            </div>
             <div class="span4">
               <h2>深入了解清华饮食圈</h2>
               <p>你可以对校内的餐饮店、食物评分、评论。而从他人的评论中，你也许能够发现清华饮食新的一面。</p>
-            </div><!--/span-->
+            </div>
             <div class="span4">
               <h2>我吃货我做主</h2>
               <p>对食堂有建议要提？想吃一个新的菜？这个平台任你说，得到较多支持的建议将被提交到学校审核，甚至成为现实</p>
-            </div><!--/span-->
-          </div><!--/row-->
+            </div>
+          </div>-->
 {% endblock %}

@@ -27,7 +27,10 @@ CanteenController.canteen = function(req,res){
 	if(req.params.id){
 		Canteen.findById(req.params.id,function(err,item){
 			if(item){
-				
+				Dish.findByCanteenId(item._id,function(err,items){
+					canteen.dishes = items;
+					res.render("canteen/canteen.html",{'canteen':canteen});
+				});
 			}
 			else{
 				res.send(404);

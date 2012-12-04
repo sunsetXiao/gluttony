@@ -34,6 +34,13 @@ Dish.findById = function(id,outerCallback){
 	}
 	db.Dish.findOne({_id:id},outerCallback);
 }
+
+Dish.findByCanteenId = function(canteenId,outerCallback){
+	if(typeof(canteenId) == 'string'){
+		canteenId = new ObjectID(canteenId);
+	}
+	db.Dish.findItems({"canteenId":canteenId},outerCallback);
+}
 Dish.prototype.update = function(outerCallback){
 	db.Dish.update({_id:this.data._id},this.data,{safe:true},outerCallback);
 }
