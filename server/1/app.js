@@ -62,5 +62,10 @@ app.get('/admin/',AdminController.index);
 app.get('/admin/canteen/',AdminController.manageCanteen);
 app.get('/admin/dish/',AdminController.manageDish);
 
+
+//Api
+app.get('/api/randomDish/',ApiController.randomDish);
+
+
 app.listen(app.get('port'));
 console.log("Server listening on port " + app.get('port'));

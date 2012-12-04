@@ -51,3 +51,7 @@ Dish.prototype.update = function(outerCallback){
 Dish.prototype.delete = function(outerCallback){
 	db.Dish.remove({_id:this.data._id},{safe:true},outerCallback);
 }
+
+Dish.count = function(outerCallback){
+	db.Dish.count({},outerCallback);
+}

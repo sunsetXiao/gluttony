@@ -47,8 +47,23 @@
 		</div>
 	</div>
 </form>
+<a class="btn" id="randomDish">手气不错</a>
+
 
 <script type="text/javascript">
+
+$("#randomDish").click(function(){
+	$.ajax({
+		url:"/api/randomDish/",
+		type:"get",
+		dataType:"json",
+		success:function(data){
+			console.log(data);
+		}
+	})
+});
+
+
 $("#newDishForm").ajaxForm({
 	beforeSubmit:function(){
 

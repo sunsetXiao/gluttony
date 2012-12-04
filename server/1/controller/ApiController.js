@@ -16,9 +16,24 @@ ApiController.getImage = function(req,res){
 
 ApiController.randomDish = function(req,res){
 	async.waterfall([
-			
+			function(waterfallCallback){
+				Dish.find({},function(err,dishes){
+					if(err)	waterfallCallback(err);
+					var r = Math.round(Math.random() * dishes.length);
+					//console.log(dishes);
+					r = r % dishes.length;
+					console.log(r);
+					waterfallCallback(err,dishes[r]);
+				});
+			},
+			function(dish,waterfallCallback){
+				Canteen.findById(dish.canteenId,function(err,item){
+					dish.canteen = item;
+					waterfallCallback(err,dish);
+				});
+			}
 		],
-		function(err){
-
+		function(err,dish){
+			res.json(dish);
 		});
 }
