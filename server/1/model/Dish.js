@@ -1,25 +1,38 @@
 var config = require('../config'),
 	mongo = require('mongoskin'),
-	db = mongo.db(config.db.url,{safe:true})
+	db = mongo.db(config.db.url,{safe:true}),
+	ObjectID = mongo.ObjectID
 	;
 
 db.bind('Dish');
-var Dish = function(data){
+var Dish = exports.Dish = function(data){
 	this.data = data;
 } 
-Dish = exports.Dish;
 
 /**
 
 **/
 Dish.create = function(data,outerCallback){
-	db.Dish.insert(data,{safe:true},outerCallback);
+	db.Dish.insert({
+		canteenId:data.canteenId,
+		name:data.dishName,
+		description:data.dishDescription,
+		price:data.dishPrice,
+		previewUrl:data.previewUrl,
+		rates:[],
+		comments:[]
+	},{safe:true},outerCallback);
 }
 
 Dish.find = function(query,outerCallback){
 	db.Dish.findItems(query,outerCallback);
 }
 
+Dish.findById = function(id,outerCallback){
+	if(typeof(id) == 'string'){
+		id = 
+	}
+}
 Dish.prototype.update = function(outerCallback){
 	db.Dish.update({_id:this.data._id},this.data,{safe:true},outerCallback);
 }

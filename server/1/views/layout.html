@@ -6,6 +6,7 @@
 
 <link rel="stylesheet" type="text/css" href="/css/bootstrap.css">
 <link rel="stylesheet" type="text/css" href="/css/bootstrap-responsive.css">
+<link rel="stylesheet" type="text/css" href="/css/zebra_dialog.css">
 <style type="text/css">
       body {
         padding-top: 60px;
@@ -15,7 +16,9 @@
         padding: 9px 0;
       }
     </style>
-{% block extra_css %}{% endblock %}
+{% block extra_css %}
+
+{% endblock %}
 </head>
 <body>
   <div class="navbar navbar-inverse navbar-fixed-top">
@@ -46,6 +49,9 @@
       <p class="muted credit">清华吃货圈</p>
     </div>
   </div>
+<script type="text/javascript" src="/js/jquery-1.8.0.min.js"></script>
+<script type="text/javascript" src="/js/zebra_dialog.js"></script>
+<script type="text/javascript" src="/js/Util.js"></script>
 {% block extra_js %}{% endblock %}
 </body>
 </html>

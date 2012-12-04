@@ -1,0 +1,57 @@
+
+<div>
+<table class="table">
+	<thead>
+		<tr>
+			<th>#</th>
+			<th>食堂名称</th>
+			<th>食堂描述</th>
+		</tr>
+	</thead>
+	{% for canteen in canteenList %}
+	<tr>
+		<td>{{loop.index}}</td>
+		<td>{{canteen.name}}</td>
+		<td>{{canteen.description}}</td>
+	</tr>
+	{% endfor %}
+</table>
+</div>
+<form class="form-horizontal">
+	<legend>新建食堂</legend>
+	<div class="control-group">
+		<label class="control-label">食堂名称</label>
+		<div class="controls">
+			<input type="text" placeholder="请输入食堂名称" name="canteenName">
+		</div>
+	</div>
+	<div class="control-group">
+		<label class="control-label">食堂描述</label>
+		<div class="controls">
+			<textarea name="canteenDescription" rows="3"></textarea>
+		</div>
+	</div>
+	<div class="control-group">
+		<div class="controls">
+			<a class="btn" id="createCanteenSubmit">新建>></a>
+		</div>
+	</div>
+</form>
+
+<script type="text/javascript">
+$("#createCanteenSubmit").click(function(){
+	var data = {};
+	data.canteenName = $("input[name=canteenName]").val();
+	data.canteenDescription = $("textarea[name=canteenDescription]").val();
+	console.log(data);
+	AdminController.createCanteen(data,function(result){
+		if(result.OK){
+			$("input[name=canteenName]").val("");
+			$("textarea[name=canteenDescription]").val("");
+		}
+		else{
+
+		}
+	});
+});
+</script>

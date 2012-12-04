@@ -7,7 +7,9 @@ var express = require('express'),
     consolidate = require('consolidate')
 	   app = express(),
      AdminController = require('./controller/AdminController').AdminController,
-     CanteenController = require('./controller/CanteenController').CanteenController
+     CanteenController = require('./controller/CanteenController').CanteenController,
+     DishController = require('./controller/DishController').DishController,
+     ApiController = require('./controller/ApiController').ApiController
      ;
 
 
@@ -18,9 +20,47 @@ app.configure(function(){
   require('swig').init({ root: path.join(__dirname, 'views'), allowErrors: true,cache:false });
   app.set('view engine', 'html');
   app.use(express.static(path.join(__dirname, 'static')));
+  express.logger.format('devx', function(tokens, req, res){
+    var status = res.statusCode
+      , color = 32;
+
+    if (status >= 500) color = 31
+    else if (status >= 400) color = 33
+    else if (status >= 300) color = 36;
+
+    if(req.method == 'GET' &&
+        (req.originalUrl.indexOf("/js/") == 0 ||
+         req.originalUrl.indexOf("/css/") == 0||
+         req.originalUrl.indexOf("/img/") == 0))
+      return null;
+
+    return '\033[90m' + req.method
+      + ' ' + req.originalUrl + ' '
+      + '\033[' + color + 'm' + res.statusCode
+      + ' \033[90m'
+      + (new Date - req._startTime)
+      + 'ms'
+      + '\033[0m';
+  });
+  app.use(express.logger('devx'));
+  app.use(express.bodyParser());
 });
 
 
+app.get('/grid/img/:id',ApiController.getImage);
+
+
+//Canteen
 app.get('/',CanteenController.index);
+app.post('/canteens/',CanteenController.create);
+
+//Dish
+app.post('/dishes/',DishController.create);
+
+//Admin
+app.get('/admin/',AdminController.index);
+app.get('/admin/canteen/',AdminController.manageCanteen);
+app.get('/admin/dish/',AdminController.manageDish);
+
 app.listen(app.get('port'));
 console.log("Server listening on port " + app.get('port'));

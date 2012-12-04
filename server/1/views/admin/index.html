@@ -5,12 +5,75 @@
 <div class="row-fluid">
     <div class="span3">
       <div class="well sidebar-nav">
-        <ul class="nav nav-list">
-          <li><a href="">食堂管理</a></li>
-          <li><a href="">紫荆2层</a></li>
+        <ul class="nav nav-list" id="managerSidebar">
+        	<li id="manageCanteen"><a href="javascript:AdminController.manageCanteen();">食堂管理</a></li>
+        	<li id="manageDish"><a href="javascript:AdminController.manageDish();">食物管理</a></li>
         </ul>
       </div><!--/.well -->
     </div><!--/span-->
+     <div class="span9" id="mainContent">
+     </div>
 </div>
 
+{% endblock %}
+
+{% block extra_js %}
+<script type="text/javascript" src="/js/jquery.form.js"></script>
+<script type="text/javascript">
+
+var AdminController = function(){};
+
+AdminController.manageCanteen = function(){
+	$.ajax({
+		url:'/admin/canteen/',
+		type:'get',
+		success:function(html){
+			$("#mainContent").html(html);
+			$("#managerSidebar li").each(function(v){
+				$(this).removeClass("active");
+			});
+			$("#manageCanteen").addClass("active");
+		},
+		error:function(){
+
+		}
+	});
+}
+AdminController.manageDish = function(){
+	$.ajax({
+		url:'/admin/dish/',
+		type:'get',
+		success:function(html){
+			$("#mainContent").html(html);
+			$("#managerSidebar li").each(function(v){
+				$(this).removeClass("active");
+			});
+			$("#manageDish").addClass("active");
+			//Util.notifySuccess();
+		},
+		error:function(){
+
+		}
+	});
+}
+
+
+AdminController.createCanteen = function(data,callback){
+	$.ajax({
+		url:'/canteens/',
+		type:'POST',
+		data:data,
+		success:function(res){
+			Util.notifySuccess();
+			callback({OK:true});
+		},
+		error:function(res){
+			callback({OK:false});
+		}
+	});
+}
+
+AdminController.manageCanteen();
+
+</script>
 {% endblock %}

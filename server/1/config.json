@@ -1,4 +1,6 @@
 {
+	"gridfs": "/grid/img/",
+	
 	"environment":{
 		"development":{
 			"db": {

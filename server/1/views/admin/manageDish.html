@@ -1,0 +1,64 @@
+
+<form class="form-horizontal" id="newDishForm" action="/dishes/" method="post">
+	<legend>新建食物</legend>
+	<div class="control-group">
+		<label class="control-label">名称</label>
+		<div class="controls">
+			<input type="text" placeholder="请输入食堂名称" name="dishName">
+		</div>
+	</div>
+	<div class="control-group">
+		<label class="control-label">描述</label>
+		<div class="controls">
+			<textarea name="dishDescription" rows="3"></textarea>
+		</div>
+	</div>
+	<div class="control-group">
+		<label class="control-label">所属餐厅</label>
+		<div class="controls">
+			{% for canteen in canteenList %}
+			<label class="radio">
+				<input type="radio" name="canteenId" value="{{canteen._id}}">{{canteen.name}}
+			</label>
+			{% endfor %}
+		</div>
+	</div>
+	<div class="control-group">
+		<label class="control-label">大致方位</label>
+		<div class="controls">
+			<input type="number"  placeholder="填写此项以帮助定位~" name="dishLocation">
+		</div>
+	</div>
+	<div class="control-group">
+		<label class="control-label">价格</label>
+		<div class="controls">
+			<input type="number"  name="dishPrice">
+		</div>
+	</div>
+	<div class="control-group">
+		<label class="control-label">预览图片（可选）</label>
+		<div class="controls">
+			<input type="file"  name="dishPreview">
+		</div>
+	</div>
+	<div class="control-group">
+		<div class="controls">
+			<input type="submit" class="btn" id="createCanteenSubmit" value="新建>>">
+		</div>
+	</div>
+</form>
+
+<script type="text/javascript">
+$("#newDishForm").ajaxForm({
+	beforeSubmit:function(){
+
+	},
+	success:function(){
+		Util.notifySuccess();
+	},
+	error:function(){
+
+	},
+	clearForm:true
+});
+</script>
