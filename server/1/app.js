@@ -53,7 +53,8 @@ app.get('/grid/img/:id',ApiController.getImage);
 //Canteen
 app.get('/',CanteenController.index);
 app.post('/canteens/',CanteenController.create);
-
+// Render the specific canteen.
+app.get('/canteen/:id/', CanteenController.canteen);
 //Dish
 app.post('/dishes/',DishController.create);
 

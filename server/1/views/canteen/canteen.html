@@ -1,0 +1,35 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<div>
+<table class="table">
+
+	<p> {{canteen.name}} </p>
+	<p> {{canteen.description}}</p>
+	<p> {{canteen.previewUrl}}</p>
+
+
+	<thead>
+		<tr>
+			<th>#</th>
+			<th>菜名</th>
+			<th>描述</th>
+			<th>价格</th>
+			<th>图片</th>
+			<th>评分</th>
+			<th>点评</th>
+		</tr>
+	</thead>
+	{% for dish in dishesList %}
+	<tr>
+		<td>{{loop.index}}</td>
+		<td>{{dish.name}}</td>
+		<td>{{dish.price}}</td>
+		<td>{{dish.previewUrl}}</td>
+		<td></td>
+		<td></td>
+	</tr>
+	{% endfor %}
+</table>
+</div>
+{% endblock %}

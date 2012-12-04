@@ -10,7 +10,8 @@ var CanteenController = exports.CanteenController = function(){};
 
 CanteenController.index = function(req,res){
 	Canteen.find({},function(err,canteenList){
-		res.render('index.html',{canteenList:canteenList});
+		if (canteenList)
+			res.render('index.html',{canteenList:canteenList});
 	});
 }
 
@@ -49,8 +50,8 @@ CanteenController.canteen = function(req,res){
 		Canteen.findById(req.params.id,function(err,item){
 			if(item){
 				Dish.findByCanteenId(item._id,function(err,items){
-					canteen.dishes = items;
-					res.render("canteen/canteen.html",{'canteen':canteen});
+					//canteen.dishes = items;
+					res.render("canteen/canteen.html",{canteen:item, dishesList:items});
 				});
 			}
 			else{
