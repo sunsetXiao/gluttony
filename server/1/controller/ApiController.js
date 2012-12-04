@@ -11,3 +11,7 @@ ApiController.getImage = function(req,res){
     	res.end(object,'binary');
 	},req.params.id);
 }
+
+ApiController.randomDish = function(req,res){
+	
+}
