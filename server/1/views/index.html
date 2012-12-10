@@ -3,8 +3,8 @@
 {% block extra_css %}
 <style type="text/css">
 #bannerCarousel img{
-  width:970px;
-  height:350px;
+  width:1170px;
+  height:400px;
 }
 </style>
 {% endblock %}
@@ -15,7 +15,7 @@ $("#bannerCarousel").carousel();
 </script>
 {% endblock %}
 {% block content %}
-<div class="inner">
+<div class="container">
   <div class="row-fluid">
     <div class="span4">
       <h2>餐厅列表<h2>
@@ -47,7 +47,7 @@ $("#bannerCarousel").carousel();
     </div>
     <div class='row-fluid'>
       {% for canteen in canteenList %}
-      <div class="span4 canteen-grid">
+      <div class="span3 canteen-grid">
         <h1><a href='/canteen/{{canteen._id}}/'>{{canteen.name}}</a></h1>
         <div class="span8 offset2" >
           <img src="/img/canteen_sample.jpg">

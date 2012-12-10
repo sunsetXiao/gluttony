@@ -17,19 +17,27 @@ a:hover{
 	width:960px;
 	margin: 0 auto;
 }
-
-.outer-shadow
-{
-	box-shadow:0 0 1px #000; 
+.inner-container{
+  padding-left: 10%;
+  padding-right: 10%;
 }
 
-.canteen-grid{
-	box-shadow:0 0 1px #000; 
+.canteen-grid,.food-grid{
+	/*box-shadow:0 0 2px #000;*/ 
 	padding:10px 15px 0px 5px;
 }
 
-.canteen-grid hr{
+.canteen-grid hr, .food-grid hr{
 	color:#777;
 	width: 100%;
 	margin: 4px 0 4px 0;
+}
+
+hr.title-splitor{
+  color:#444;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 2px;
+  margin-top: 2px;
 }

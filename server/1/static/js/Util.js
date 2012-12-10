@@ -1,5 +1,8 @@
 var Util = function(){
-	notifySuccess : function(){
+	
+}
+
+Util.notifySuccess = function(){
 		new $.Zebra_Dialog("操作成功",{
 			'buttons':  false,
 			'modal':false,
@@ -9,7 +12,7 @@ var Util = function(){
 		});
 	}
 
-	notifyError : function(){
+Util.notifyError = function(){
 		new $.Zebra_Dialog("操作成功",{
 			'buttons':  false,
 			'modal':false,
@@ -18,6 +21,4 @@ var Util = function(){
 		    'auto_close': 3000
 		});
 	}
-}
-
 

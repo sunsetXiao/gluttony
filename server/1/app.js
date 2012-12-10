@@ -55,6 +55,9 @@ app.get('/',CanteenController.index);
 app.post('/canteens/',CanteenController.create);
 // Render the specific canteen.
 app.get('/canteen/:id/', CanteenController.canteen);
+app.post('/canteen/:id/',CanteenController.update);
+
+
 //Dish
 app.post('/dishes/',DishController.create);
 
@@ -66,6 +69,8 @@ app.get('/admin/dish/',AdminController.manageDish);
 
 //Api
 app.get('/api/randomDish/',ApiController.randomDish);
+app.get('/api/canteen/:id/',ApiController.canteen);
+app.post('/api/canteen/random/',ApiController.randomCanteen);
 
 
 app.listen(app.get('port'));

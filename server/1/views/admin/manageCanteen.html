@@ -1,5 +1,5 @@
 
-<div>
+<div class="row-fluid">
 <table class="table">
 	<thead>
 		<tr>
@@ -13,45 +13,123 @@
 		<td>{{loop.index}}</td>
 		<td>{{canteen.name}}</td>
 		<td>{{canteen.description}}</td>
+		<td><a class="btn" href="javascript:AdminController.editCanteenForm('{{canteen._id}}')">编辑</a></td>
+		<td><a class="btn">删除</a></td>
 	</tr>
 	{% endfor %}
 </table>
+	<div class="span6 offset6">
+	<a class="btn" href="#create-canteen-modal" role="button" data-toggle="modal">新建食堂</a>
+	</div>
 </div>
-<form class="form-horizontal" id="createCanteenForm" action="/canteens/" method="post">
-	<legend>新建食堂</legend>
-	<div class="control-group">
-		<label class="control-label">食堂名称</label>
-		<div class="controls">
-			<input type="text" placeholder="请输入食堂名称" name="canteenName">
+<div class="modal hide fade" id="create-canteen-modal" tabindex="-1" role="dialog" aria-hidden="true">
+	<form class="form-horizontal" id="createCanteenForm" action="/canteens/" method="post">
+		<div class="modal-header">
+		<legend id="formName">新建食堂</legend>
 		</div>
-	</div>
-	<div class="control-group">
-		<label class="control-label">食堂描述</label>
-		<div class="controls">
-			<textarea name="canteenDescription" rows="3"></textarea>
+		<div class="modal-body">
+			<div class="control-group">
+				<label class="control-label">食堂名称</label>
+				<div class="controls">
+					<input type="text" placeholder="请输入食堂名称" name="canteenName">
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">食堂描述</label>
+				<div class="controls">
+					<textarea name="canteenDescription" rows="3"></textarea>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">描述图片</label>
+				<div class="controls">
+					<input type="file" name="canteenPreview" />
+				</div>
+			</div>
 		</div>
-	</div>
-	<div class="control-group">
-		<label class="control-label">描述图片</label>
-		<div class="controls">
-			<input type="file" name="canteenPreview" />
+		<div class="modal-footer">
+			<div class="control-group">
+				<div class="controls">
+					<input class="btn" type="submit" value="新建>>">
+				</div>
+			</div>
 		</div>
-	</div>
-	<div class="control-group">
-		<div class="controls">
-			<input class="btn" type="submit" value="新建>>">
-		</div>
-	</div>
-</form>
+	</form>
+</div>
 
+<div class="modal hide fade" id="edit-canteen-modal" tabindex="-1" role="dialog" aria-hidden="true">
+	<form class="form-horizontal" id="editCanteenForm" action="/canteen/" method="post">
+		<div class="modal-header">
+		<legend id="formName">编辑食堂</legend>
+		</div>
+		<div class="modal-body">
+			<div class="control-group">
+				<label class="control-label">食堂名称</label>
+				<div class="controls">
+					<input type="text" placeholder="请输入食堂名称" name="canteenName">
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">食堂描述</label>
+				<div class="controls">
+					<textarea name="canteenDescription" rows="3"></textarea>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">描述图片</label>
+				<div class="controls">
+					<input type="file" name="canteenPreview" />
+				</div>
+			</div>
+		</div>
+		<div class="modal-footer">
+			<div class="control-group">
+				<div class="controls">
+					<input class="btn" type="submit" value="提交编辑>>">
+				</div>
+			</div>
+		</div>
+	</form>
+</div>
 <script type="text/javascript">
+
+AdminController.editCanteenForm = function(id){
+	$.ajax({
+		url:'/api/canteen/' + id + '/',
+		type:'get',
+		dataType:'json',
+		success:function(data){
+			console.log(data);
+			var form = $("#editCanteenForm");
+			form.attr("action","/canteen/" + id + "/");
+			form.find('input[name=canteenName]').val(data.name);
+			form.find('textarea[name=canteenDescription]').val(data.description);
+			$("#edit-canteen-modal").modal('show');
+
+		},
+		error:function(data){
+
+		}
+	});
+}
+
 $("#createCanteenForm").ajaxForm({
 	success:function(){
 		Util.notifySuccess();
+		$("#create-canteen-modal").modal('hide');
 	},
 	error:function(){
-
 	},
 	clearForm:true
-})
+});
+
+$("#editCanteenForm").ajaxForm({
+	success:function(){
+		Util.notifySuccess();
+		$("#edit-canteen-modal").modal('hide');
+	},
+	error:function(){
+	},
+	clearForm:true
+});
 </script>

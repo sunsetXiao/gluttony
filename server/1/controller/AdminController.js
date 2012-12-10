@@ -8,7 +8,10 @@ AdminController.logOnForm = function(req,res){
 
 }
 AdminController.index = function (req,res){
-	res.render('admin/index.html',{name:'taylor'});
+	Canteen.find({},function(err,items){
+		if(err){return res.send(500);}
+		res.render('admin/index.html',{canteenList:items});
+	});
 }
 
 AdminController.manageCanteen = function(req,res){

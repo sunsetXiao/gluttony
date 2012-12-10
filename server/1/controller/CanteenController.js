@@ -45,13 +45,52 @@ CanteenController.create = function(req,res){
 	
 }
 
+CanteenController.update = function(req,res){
+	if(req.params.id){
+		Canteen.findById(req.params.id,function(err,item){
+			if(item){
+				var canteen = new Canteen(item);
+				var f = new FileHandler();
+				var postBody = req.body;
+				async.waterfall([
+						function(waterfallCallback){
+							if(req.files.canteenPreview){
+								f.saveFromFile(req.files.canteenPreview.path,function(err,imgId){
+									waterfallCallback(err,config.gridfs + imgId);
+								});
+							}else{
+								waterfallCallback(null,null);
+							}
+						},
+						function(previewUrl,waterfallCallback){
+							if(previewUrl)
+								canteen.data.previewUrl = previewUrl;
+							canteen.data.name = postBody.canteenName;
+							canteen.data.description = postBody.canteenDescription;
+							canteen.update(waterfallCallback);
+						}
+					],function(err){
+						if(err){
+							res.send(500);
+						}else{
+							res.send(200);
+						}
+					});
+			}else{
+				res.send(404);
+			}
+		});
+	}else{
+		res.send(404);
+	}
+}
 CanteenController.canteen = function(req,res){
 	if(req.params.id){
 		Canteen.findById(req.params.id,function(err,item){
 			if(item){
 				Dish.findByCanteenId(item._id,function(err,items){
-					//canteen.dishes = items;
-					res.render("canteen/canteen.html",{canteen:item, dishesList:items});
+					item.dishes = items;
+					res.render("canteen/canteen.html",{canteen:item});
 				});
 			}
 			else{

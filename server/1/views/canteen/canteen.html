@@ -1,35 +1,65 @@
 {% extends 'layout.html' %}
 
+{% block extra_css %}
+<style type="text/css">
+.inner{
+	width:1080px;
+	margin: 0 auto;
+}
+.right-sidebar{
+
+}
+.left-main{
+	box-shadow: 4px 0px 2px #777;
+}
+
+.row-fluid .span4 {
+    width: 30.623931623931625%;
+    *width: 30.570740134569924%;
+  }
+</style>
+{% endblock %}
 {% block content %}
-<div>
-<table class="table">
-
-	<p> {{canteen.name}} </p>
-	<p> {{canteen.description}}</p>
-	<p> {{canteen.previewUrl}}</p>
-
-
-	<thead>
-		<tr>
-			<th>#</th>
-			<th>菜名</th>
-			<th>描述</th>
-			<th>价格</th>
-			<th>图片</th>
-			<th>评分</th>
-			<th>点评</th>
-		</tr>
-	</thead>
-	{% for dish in dishesList %}
-	<tr>
-		<td>{{loop.index}}</td>
-		<td>{{dish.name}}</td>
-		<td>{{dish.price}}</td>
-		<td>{{dish.previewUrl}}</td>
-		<td></td>
-		<td></td>
-	</tr>
-	{% endfor %}
-</table>
+<div class="container">
+	<div class="row-fluid">
+		<div class="span10 left-main">
+			<h1>食物列表</h1>
+			<hr class="title-splitor" height="40px;">
+				{% for dish in canteen.dishes %}
+					<div class="span4 food-grid">
+						<div class="span12"><h2><a>{{dish.name}}</a></h2></div>
+						<hr>
+						<div class="span8 offset2">
+							{% if dish.previewUrl %}
+							<img src="{{dish.previewUrl}}">
+							{% else %}
+							<img src="/img/food-example.jpg">
+							{% endif %}
+						</div>
+						<hr>
+						<div class="span12">
+							{% if dish.price %}
+								价格：{{dish.price}}
+							{% else %}
+								暂无价格描述
+							{% endif %}
+						</div>
+						<hr>
+						<div class="span12">
+							{% if dish.description %}
+								{{dish.description}}
+							{% else %}
+								暂无描述
+							{% endif %}
+						</div>
+					</div>
+				{% endfor %}
+		</div>
+		<div class="span2 rightsidebar">
+			<h1> {{canteen.name}} </h1>
+			<img src="{{canteen.previewUrl}}">
+			<p> {{canteen.description}}</p>
+		</div>
+	</div>
 </div>
 {% endblock %}
