@@ -5,6 +5,11 @@ import java.util.ArrayList;
 import ch.idsia.mario.engine.sprites.Mario;
 import competition.cig.robinbaumgarten.astar.level.Level;
 
+/**
+ * 一个简单的模拟器类，仅仅实现了模拟部分的功能，而没有包含算法的元素
+ * @author 张泰源
+ *
+ */
 public class TSimulator {
 	public LevelScene levelScene;
 	
@@ -23,22 +28,37 @@ public class TSimulator {
 		levelScene.level = new Level(1500,15);
 	}// 构造函数
 	
+	/**
+	 * 模拟一个动作
+	 * @param action
+	 */
 	public void advanceStep(boolean[] action)
 	{
 		levelScene.mario.setKeys(action);
 
 		levelScene.tick();
 	}
+	/**
+	 * 模拟一个动作
+	 * @param action
+	 */
 	public static void advanceStep(LevelScene l,boolean[] action){
 		l.mario.setKeys(action);
 		l.tick();
 	}
-	
+	/**
+	 * 设置场景
+	 * @param levelPart
+	 * @param enemies
+	 */
 	public void setLevelPart(byte[][] levelPart, float[] enemies){
     	levelScene.setLevelScene(levelPart);
     	levelScene.setEnemies(enemies);
 	}
-	
+	/**
+	 * 备份场景
+	 * @return 场景的副本
+	 */
 	public LevelScene backupState()
 	{
 		LevelScene sceneCopy = null;
@@ -52,6 +72,11 @@ public class TSimulator {
 		
 		return sceneCopy;
 	}
+	/**
+	 * 备份场景
+	 * @param l 目标场景
+	 * @return 场景的副本
+	 */
 	public static LevelScene backupState(LevelScene l){
 		LevelScene sceneCopy = null;
 		try
@@ -64,7 +89,10 @@ public class TSimulator {
 		
 		return sceneCopy;
 	}
-	
+	/**
+	 * 恢复到目标场景
+	 * @param l
+	 */
 	public void restoreState(LevelScene l)
 	{
 		LevelScene sceneCopy = null;
@@ -76,7 +104,13 @@ public class TSimulator {
 			e.printStackTrace();
 		}
 		levelScene = sceneCopy;
-	}// 重新载入场景信息
+	}
+	/**
+	 * 判断一个情况下是否能够跳跃
+	 * @param currentPos
+	 * @param checkParent
+	 * @return
+	 */
 	public static boolean canJump(AStarNode currentPos, boolean checkParent)
     {
 		/*
@@ -90,17 +124,26 @@ public class TSimulator {
 		return currentPos.sceneSnapShot.mario.mayJump()
 				|| (currentPos.sceneSnapShot.mario.jumpTime > 0);
     }
+	/**
+	 * 
+	 * @return mario受到的伤害
+	 */
     public int getMarioDamage()
     {
     	if (levelScene.level.isGap[(int) (levelScene.mario.x/16)] &&
     			levelScene.mario.y > levelScene.level.gapHeight[(int) (levelScene.mario.x/16)]*16)
     	{
-    		System.out.println("Gap height: "+levelScene.level.gapHeight[(int) (levelScene.mario.x/16)]);
+    		//System.out.println("Gap height: "+levelScene.level.gapHeight[(int) (levelScene.mario.x/16)]);
     		return levelScene.mario.damage + 5;
     	}
     	return levelScene.mario.damage;
-    }// 获取mario收到伤害的值
+    }
+    /**
+	 * @param scene 传入的场景
+	 * @return mario受到的伤害
+	 */
     static public int getMarioDamage(LevelScene scene){
+    	//如果mario陷进去坑了，哪怕只是一点，也当作受伤了
     	if (scene.level.isGap[(int) (scene.mario.x/16)] &&
     			scene.mario.y > scene.level.gapHeight[(int) (scene.mario.x/16)]*16)
     	{
@@ -110,9 +153,13 @@ public class TSimulator {
     	return scene.mario.damage;
     }
     
+    /**
+     * 返回一个结点对应的情境下能够执行的所有动作
+     * @param node
+     * @return
+     */
     public static ArrayList<boolean[]> getPossibleActions(AStarNode node){
     	ArrayList<boolean[]> possibleActions = new ArrayList<boolean[]>();
-    	
     	
     	//跳
     	if(canJump(node, true)){
@@ -120,7 +167,7 @@ public class TSimulator {
     		possibleActions.add(createAction(false, false, false, true, true));
     	}
     	
-    	// run right
+    	// 向右
     	possibleActions.add(createAction(false, true, false, false, true));
     	possibleActions.add(createAction(false, true, false, false, false));
     	if(canJump(node, true)){
@@ -128,7 +175,7 @@ public class TSimulator {
         	possibleActions.add(createAction(false, true, false, true, false));
     	}
     	
-    	// run left
+    	// 向左
     	possibleActions.add(createAction(true, false, false, false, false));
     	possibleActions.add(createAction(true, false, false, false, true));
     	if(canJump(node, true)){
@@ -193,6 +240,13 @@ public class TSimulator {
     	return action;
     }
     
+    /**
+     * 给定速度和当前行动，计算最多能跑多远和达到多少速度
+     * @param currentAccel
+     * @param action
+     * @param ticks
+     * @return
+     */
     protected static float[] estimateMaximumForwardMovement(float currentAccel, boolean[] action, int ticks)
     {
     	float dist = 0;

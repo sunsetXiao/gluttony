@@ -10,6 +10,11 @@ import java.util.Vector;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+/**
+ * 这个类是用来以可视化的方式监测搜索到的路径的
+ * @author firstprayer
+ *
+ */
 public class VisualizeSimulator extends JFrame{
 	
 	public static VisualizeSimulator getSingleton(){

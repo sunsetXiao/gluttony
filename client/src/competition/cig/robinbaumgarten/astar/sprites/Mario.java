@@ -526,7 +526,7 @@ public class Mario extends Sprite implements Cloneable
 
     public void getHurt()
     {
-    	System.out.print("[hurt!]");
+    	//System.out.print("[hurt!]");
     	damage++;
         //if (deathTime > 0 || world.paused) return;
         if (invulnerableTime > 0) return;
