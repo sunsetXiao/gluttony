@@ -27,6 +27,7 @@ public class AStarModel {
 			preY = startNode.sceneSnapShot.mario.y;
 		}
 		float maxXWidth = 256;
+		float minXWidth = 40;
 		if(startNode != null)
 			openList.add(startNode);
 		while((System.currentTimeMillis() - startTime <= maxTime)
@@ -54,7 +55,8 @@ public class AStarModel {
 					//否则，新建一个搜索的结点，放到openlist里面
 					AStarNode newNode = new AStarNode(action, 
 							searchNode, TSimulator.DEFAULT_STEP_REPETITION, snapShot);
-					if(newNode.getCost() < minCost){
+					if(newNode.getCost() < minCost && afterX - preX > minXWidth){
+						//最优节点必须保证一定的搜索距离
 						minCost = newNode.getCost();
 						currentBestNode = newNode;
 					}

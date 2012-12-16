@@ -11,7 +11,7 @@ public class TSimulator {
 	public final static float MAX_MAP_LENGTH = 100000;
 	public final static boolean[] DEFAULT_ACTION = {false,true,false,false,false};
 	public final static boolean[] RUSHING_ACTION = {false,true,false,false,true};
-	public final static boolean[] WORST_SITUATION_ACTION = {true,false,false,false,true};
+	public final static boolean[] WORST_SITUATION_ACTION = {true,false,false,false,false};
 	public final static boolean[] PASSIVE_ACTION = {false,false,false,false,false};
 	public final static float maxMarioSpeed = 10.9090909f;
 	public final static int DEFAULT_STEP_REPETITION = 1;

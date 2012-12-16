@@ -29,13 +29,13 @@ public class AStarNode implements Comparable<AStarNode>{
 		currentSpeed = sceneSnapShot.mario.xa;
 		calculateCost();
 	}
-	/*
+	
 	private void calculateCost(){
 		float[] disAndSpeed = TSimulator.estimateMaximumForwardMovement(currentSpeed,
 				TSimulator.RUSHING_ACTION, TSimulator.DEFAULT_STEP_REPETITION);
 		estimateCost = TSimulator.MAX_MAP_LENGTH - currentDistanceFromOrigin - disAndSpeed[0];
-	}*/
-	
+	}
+	/*
 	private void calculateCost(){
 		if(parentNode == null){
 			accumulateRealCost = 0;
@@ -51,7 +51,7 @@ public class AStarNode implements Comparable<AStarNode>{
 			accumulateRealCost = newCost + parentNode.accumulateRealCost;
 		}
 		estimateCost = TSimulator.MAX_MAP_LENGTH - currentDistanceFromOrigin + accumulateRealCost;
-	}
+	}*/
 	private float estimateMaxForwad(float speed,int repetition){
 		//return TSimulator.maxMarioSpeed * repetition;
 		

@@ -70,7 +70,7 @@ public class MyAgent extends BasicAIAgent implements Agent{
 		preX = simulator.levelScene.mario.x;
 		preY = simulator.levelScene.mario.y;
 		
-		//VisualizeSimulator.getSingleton().drawTrace(simulator.levelScene, currentTargetNode);
+		VisualizeSimulator.getSingleton().drawTrace(simulator.levelScene, currentTargetNode);
 		//System.out.println(TSimulator.printAction(action) + "("
 			//	+ simulator.levelScene.mario.x + "," + simulator.levelScene.mario.y + ")");
 		return action;
@@ -103,7 +103,7 @@ public class MyAgent extends BasicAIAgent implements Agent{
 		ArrayList<boolean[]> plansArrayList = new ArrayList<>();
 		if(node == null){
 			//这意味着没有找到最佳路径, 不顾一切地采取默认方案
-			boolean[] action = TSimulator.RUSHING_ACTION;
+			boolean[] action = TSimulator.WORST_SITUATION_ACTION;
 			System.out.println("Cannot find " + 
 					"best solution, use default solution:" + 
 					TSimulator.printAction(action));
