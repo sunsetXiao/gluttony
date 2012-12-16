@@ -96,7 +96,7 @@ public class TSimulator {
     			levelScene.mario.y > levelScene.level.gapHeight[(int) (levelScene.mario.x/16)]*16)
     	{
     		System.out.println("Gap height: "+levelScene.level.gapHeight[(int) (levelScene.mario.x/16)]);
-    		levelScene.mario.damage+=5;
+    		return levelScene.mario.damage + 5;
     	}
     	return levelScene.mario.damage;
     }// 获取mario收到伤害的值
@@ -105,7 +105,7 @@ public class TSimulator {
     			scene.mario.y > scene.level.gapHeight[(int) (scene.mario.x/16)]*16)
     	{
     		//System.out.println("Gap height: "+scene.level.gapHeight[(int) (scene.mario.x/16)]);
-    		scene.mario.damage+=5;
+    		return scene.mario.damage + 5;
     	}
     	return scene.mario.damage;
     }
@@ -135,7 +135,7 @@ public class TSimulator {
     		possibleActions.add(createAction(true, false, false, true, false));
     		possibleActions.add(createAction(true, false, false, true, true));
     	}
-    	possibleActions.add(createAction(false, false, false, false, false));
+    	//possibleActions.add(createAction(false, false, false, false, false));
     	return possibleActions;
     }
     

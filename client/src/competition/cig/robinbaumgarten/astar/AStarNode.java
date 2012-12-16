@@ -37,6 +37,13 @@ public class AStarNode implements Comparable<AStarNode>{
 	}
 	/*
 	private void calculateCost(){
+		//float[] disAndSpeed = TSimulator.estimateMaximumForwardMovement(currentSpeed,
+			//	TSimulator.RUSHING_ACTION, TSimulator.DEFAULT_STEP_REPETITION);
+		float actuallycost = currentStepNumber * 4.0f;
+		estimateCost = TSimulator.MAX_MAP_LENGTH - currentDistanceFromOrigin + actuallycost;
+	}*/
+	/*
+	private void calculateCost(){
 		if(parentNode == null){
 			accumulateRealCost = 0;
 		}else{
