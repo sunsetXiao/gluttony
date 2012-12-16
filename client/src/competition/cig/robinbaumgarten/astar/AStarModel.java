@@ -45,6 +45,7 @@ public class AStarModel {
 				TSimulator.advanceStep(snapShot, action);
 				if(TSimulator.getMarioDamage(snapShot) > preDamage){
 					//如果一个行动导致马里奥受到伤害，则放弃这个行动
+					System.out.println("Will damage:" + (snapShot.mario.damage - preDamage));
 					continue;
 				}else{
 					float afterX = snapShot.mario.x;

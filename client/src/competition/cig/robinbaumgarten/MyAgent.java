@@ -69,7 +69,9 @@ public class MyAgent extends BasicAIAgent implements Agent{
 		//adjustAction(action, simulator.levelScene);
 		preX = simulator.levelScene.mario.x;
 		preY = simulator.levelScene.mario.y;
-		
+		if(currentTargetNode == null){
+			System.out.println("The damage of mario is " + simulator.levelScene.mario.damage);
+		}
 		VisualizeSimulator.getSingleton().drawTrace(simulator.levelScene, currentTargetNode);
 		//System.out.println(TSimulator.printAction(action) + "("
 			//	+ simulator.levelScene.mario.x + "," + simulator.levelScene.mario.y + ")");

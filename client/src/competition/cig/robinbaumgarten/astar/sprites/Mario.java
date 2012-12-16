@@ -164,7 +164,7 @@ public class Mario extends Sprite implements Cloneable
             x += xa;
             y += ya;
             if(y > 1000){
-            	System.out.println("Error y==============");
+            	//System.out.println("Error y==============");
             }
             return;
         }
@@ -436,7 +436,7 @@ public class Mario extends Sprite implements Cloneable
                 onGround = true;
             }
             if(y > 256){
-            	System.out.println("Error y==============");
+            	//System.out.println("Error y==============");
             }
             return false;
         }
@@ -445,7 +445,7 @@ public class Mario extends Sprite implements Cloneable
             x += xa;
             y += ya;
             if(y > 1000){
-            	System.out.println("Error y==============");
+            	//System.out.println("Error y==============");
             }
             return true;
         }

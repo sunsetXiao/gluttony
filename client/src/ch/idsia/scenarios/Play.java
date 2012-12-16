@@ -57,7 +57,7 @@ public class Play {
         
         Task task = new ProgressTask(options);
         options.setMaxFPS(false);
-       // GlobalOptions.FPS = 4;
+        GlobalOptions.FPS = 4;
    
         options.setVisualization(true);
         options.setNumberOfTrials(1);
