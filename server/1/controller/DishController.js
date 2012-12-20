@@ -51,3 +51,73 @@ DishController.create = function(req,res){
 			}
 		});
 }
+
+DishController.update = function(req,res){
+	if(req.params.id){
+		Dish.findById(req.params.id,function(err,item){
+			if(item){
+				var dish = new Dish(item);
+				var f = new FileHandler();
+				var postBody = req.body;
+				async.waterfall([
+						function(waterfallCallback){
+							if(req.files.dishPreview){
+								f.saveFromFile(req.files.dishPreview.path,function(err,imgId){
+									waterfallCallback(err,config.gridfs + imgId);
+								});
+							}else{
+								waterfallCallback(null,null);
+							}
+						},
+						function(previewUrl,waterfallCallback){
+							if(previewUrl)
+								dish.data.previewUrl = previewUrl;
+							dish.data.name = postBody.dishName;
+							dish.data.description = postBody.dishDescription;
+							dish.data.canteenId = postBody.canteenId;
+							dish.data.price = postBody.dishPrice;
+							dish.data.location = postBody.dishLocation;
+							dish.update(waterfallCallback);
+						}
+					],function(err){
+						if(err){
+							res.send(500);
+						}else{
+							res.send(200);
+						}
+					});
+			}else{
+				res.send(404);
+			}
+		});
+	}else{
+		res.send(404);
+	}
+}
+
+DishController.comment = function(req,res){
+	if(req.params.id && req.body){
+		Dish.findById(req.params.id,function(err,dish){
+			if(dish){
+				var comments = dish.comments;
+				comments.add({
+					time:new Date(),
+					content:req.body.commentContent,
+					rate:req.body.rate
+				});
+				var dishDAO = new Dish(dish);
+				dishDAO.update(function(err){
+					if(err){
+						res.send(500);
+					}else{
+						res.send(200);
+					}
+				});
+			}else{
+				res.send(404);
+			}
+		});
+	}else{
+		res.send(404);
+	}
+}

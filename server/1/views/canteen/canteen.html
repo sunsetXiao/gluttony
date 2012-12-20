@@ -1,39 +1,197 @@
 {% extends 'layout.html' %}
 
 {% block extra_css %}
+<link rel="stylesheet" type="text/css" href="/css/jquery.rating.css">
 <style type="text/css">
 .inner{
 	width:1080px;
 	margin: 0 auto;
 }
-.right-sidebar{
-
-}
-.left-main{
-	box-shadow: 4px 0px 2px #777;
-}
 
 .row-fluid .span4 {
     width: 30.623931623931625%;
     *width: 30.570740134569924%;
+ }
+  .row-fluid .span5{
+  	width: 47.623931623931625%;
   }
+
+.modal {
+	width:950px;
+	left: 40%;
+}
+
+.modal-body{
+  	max-height: 400px;
+  }
+
+.dish-comment{
+	margin-bottom: 10px;
+}
+
+.dish-comment .content{
+ 	background: #eee;
+ 	min-height: 50px;
+ 	padding: 5px 10px;
+ 	
+ }
+.dish-comment .avatar img{
+ 	width: 50px;
+ 	height: 50px;
+ }
+ textarea{
+width: 95%;
+ }
+
 </style>
 {% endblock %}
 {% block content %}
+<script type="text/template" id="dishGridTemplate">
+<div class="span12">
+	<h2>
+	<a><%=dish.name%></a>
+	</h2>
+</div>
+<hr>
+<div class="span8 offset2">
+	<%= if dish.previewUrl %>
+	<img src="<%=dish.previewUrl%>">
+	<%= else %>
+	<img src="/img/food-example.jpg">
+	<%= endif %>
+</div>
+<hr>
+<div class="span12">
+	{% if dish.price %}
+		价格：{{dish.price}}
+	{% else %}
+		暂无价格描述
+	{% endif %}
+</div>
+<hr>
+<div class="span12">
+	{% if dish.description %}
+		{{dish.description}}
+	{% else %}
+		暂无描述
+	{% endif %}
+</div>
+</script>
+<script type="text/template" id="dishModalTemplate">
+<div class="modal-header">
+	<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+	<h3><%= dish.name %></h3>
+</div>
+<div class="row-fluid">
+		<div class="span6 modal-body">
+			<div class="imgContainer">
+				<a>
+					<img src=" <%= dish.previewUrl %>">
+				</a>
+				<div class="caption">
+					<p>价格：<%=dish.price%></p>
+					<p>地点: <%=dish.location%></p>
+				</div>
+			</div>
+			<div >描述:<%= dish.description %>
+			</div>
+		</div>
+		<div class="span5 modal-body">
+			<div>评分为: <span class="pull-right">已有6人评分</span></div>
+			<div>
+				<div class="dish-comment row-fluid">
+					<div class="span2 avatar">
+						<img  src="/img/defaultHead.png">
+					</div>
+					<div class="span10">
+						<form class="form" id="dishCommentForm" action="/dish/<%=dish._id%>/comment/" method="post">
+							<textarea rows="3" cols="30" name="commentConent"></textarea>
+							<div>
+								<input name="commentRate" type="radio" class="star"/>
+								<input name="commentRate" type="radio" class="star"/>
+								<input name="commentRate" type="radio" class="star"/>
+								<input name="commentRate" type="radio" class="star"/>
+								<input name="commentRate" type="radio" class="star"/>
+							</div>
+						  	<button type="submit" class="btn pull-right">评论</button>
+						</form>
+					</div>
+				</div>
+				
+				<div class="dish-comment row-fluid">
+					<div class="span2 avatar">
+						<img  src="/img/defaultHead.png">
+					</div>
+					<div class="span10 content">
+						<div class="">
+							<div class="arrow"></div>
+							这道菜很有风味，比较正宗，不错
+							<div class="pull-right" style="font-size:8px;">2012年12月29日 21:14</div>
+						</div>
+					</div>
+				</div>
+				<div class="dish-comment row-fluid">
+					<div class="span2 avatar">
+						<img  src="/img/defaultHead.png">
+					</div>
+					<div class="span10 content">
+						<div class="">
+							<div class="arrow"></div>
+							这道菜很有风味，比较正宗，不错, 哈哈.这道菜很有风味，比较正宗，不错, 哈哈.这道菜很有风味，比较正宗，不错, 哈哈.这道菜很有风味，比较正宗，不错, 哈哈
+							<div class="pull-right" style="font-size:8px;">2012年12月29日 21:14</div>
+						</div>
+					</div>
+				</div>
+				<div class="dish-comment row-fluid">
+					<div class="span2 avatar">
+						<img  src="/img/defaultHead.png">
+					</div>
+					<div class="span10 content">
+						<div class="">
+							<div class="arrow"></div>
+							这道菜很有风味，比较正宗，不错, 哈哈.这道菜很有风味，比较正宗，不错, 哈哈.这道菜很有风味，比较正宗，不错, 哈哈.这道菜很有风味，比较正宗，不错, 哈哈
+							<div class="pull-right" style="font-size:8px;">2012年12月29日 21:14</div>
+						</div>
+					</div>
+				</div>
+				<div class="dish-comment row-fluid">
+					<div class="span2 avatar">
+						<img  src="/img/defaultHead.png">
+					</div>
+					<div class="span10 content">
+						<div class="">
+							<div class="arrow"></div>
+							这道菜很有风味，比较正宗，不错, 哈哈.这道菜很有风味，比较正宗，不错, 哈哈.这道菜很有风味，比较正宗，不错, 哈哈.这道菜很有风味，比较正宗，不错, 哈哈
+							<div class="pull-right" style="font-size:8px;">2012年12月29日 21:14</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="modal-footer">
+</div>
+</script>
 <div class="container">
-	<div class="row-fluid">
-		<div class="span10 left-main">
+	<div class="row-fluid content-background">
+		<div class="span3">
+			<h1> {{canteen.name}} </h1>
+			<img src="{{canteen.previewUrl}}">
+			<p> {{canteen.description}}</p>
+		</div>
+		<div class="span9">
 			<h1>食物列表</h1>
 			<hr class="title-splitor" height="40px;">
 				{% for dish in canteen.dishes %}
 					<div class="span4 food-grid">
-						<div class="span12"><h2><a>{{dish.name}}</a></h2></div>
+						<div class="span12"><h2><a href="javascript:CanteenController.showDishModal('{{dish._id}}')">{{dish.name}}</a></h2></div>
 						<hr>
 						<div class="span8 offset2">
 							{% if dish.previewUrl %}
-							<img src="{{dish.previewUrl}}">
+								<img src="{{dish.previewUrl}}">
 							{% else %}
-							<img src="/img/food-example.jpg">
+								<img src="/img/food-example.jpg">
 							{% endif %}
 						</div>
 						<hr>
@@ -55,11 +213,40 @@
 					</div>
 				{% endfor %}
 		</div>
-		<div class="span2 rightsidebar">
-			<h1> {{canteen.name}} </h1>
-			<img src="{{canteen.previewUrl}}">
-			<p> {{canteen.description}}</p>
-		</div>
+		
 	</div>
 </div>
+
+<div class="modal hide fade" id="dishDisplayModal" tabindex="-1" role="dialog" aria-hidden="true">
+	
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<SCRIPT TYPE="text/javascript" src="/js/jquery.rating.js"></SCRIPT>
+<script type="text/javascript" src="/js/canteen.js"></script>
+
+<script type="text/javascript">
+var dishModalTemplate = _.template($("#dishModalTemplate").html());
+CanteenController.showDishModal = function(dishId){
+	$.ajax({
+		url:"/api/dish/" + dishId + "/",
+		type:"get",
+		dataType:"json",
+		success:function(result){
+			var html = dishModalTemplate({'dish':result});
+			$("#dishDisplayModal").html(html).modal("show");
+			$("#dishCommentForm").ajaxForm({
+				success:function(){
+					notifySuccess();
+				},
+				error:function(){
+					notifyError();
+				}
+			});
+		}
+	})
+}
+</script>
+
 {% endblock %}

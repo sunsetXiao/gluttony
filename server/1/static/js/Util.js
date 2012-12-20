@@ -13,7 +13,7 @@ Util.notifySuccess = function(){
 	}
 
 Util.notifyError = function(){
-		new $.Zebra_Dialog("操作成功",{
+		new $.Zebra_Dialog("出了点问题，请稍后重试",{
 			'buttons':  false,
 			'modal':false,
 		    'type':'information',

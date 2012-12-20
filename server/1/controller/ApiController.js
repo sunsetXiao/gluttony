@@ -38,8 +38,11 @@ ApiController.randomDish = function(req,res){
 }
 
 ApiController.randomCanteen = function(req,res){
+
 	async.waterfall([
 			function(waterfallCallback){
+				var params = req.body;
+				console.log(req.body);
 				Canteen.find({},function(err,canteens){
 					if(err)	waterfallCallback(err);
 					var r = Math.round(Math.random() * canteens.length);
@@ -65,6 +68,32 @@ ApiController.canteen = function(req,res){
 			else{
 				res.send(404);
 			}
+		});
+	}else{
+		res.send(404);
+	}
+}
+
+ApiController.canteenList = function(req,res){
+	Canteen.find({},function(err,canteens){
+		res.json(canteens);
+	});
+}
+
+ApiController.dishList = function(req,res){
+	if(req.params.id){
+		Dish.findByCanteenId(req.params.id,function(err,dishes){
+			res.json(dishes);
+		});
+	}else{
+		res.send(404);
+	}
+}
+
+ApiController.dish = function(req,res){
+	if(req.params.id){
+		Dish.findById(req.params.id,function(err,dish){
+			res.json(dish);
 		});
 	}else{
 		res.send(404);

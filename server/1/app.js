@@ -9,7 +9,8 @@ var express = require('express'),
      AdminController = require('./controller/AdminController').AdminController,
      CanteenController = require('./controller/CanteenController').CanteenController,
      DishController = require('./controller/DishController').DishController,
-     ApiController = require('./controller/ApiController').ApiController
+     ApiController = require('./controller/ApiController').ApiController,
+     AuthController = require('./controller/AuthController').AuthController
      ;
 
 
@@ -44,10 +45,20 @@ app.configure(function(){
   });
   app.use(express.logger('devx'));
   app.use(express.bodyParser());
+  app.use(express.cookieParser());
+  app.use(express.session({
+      secret: "Tsinghua Gluttony",
+      cookie: { maxAge: 7200000} // Session expired in four hours if no user action
+    }));
 });
 
-
+//General
 app.get('/grid/img/:id',ApiController.getImage);
+
+//Login
+app.get('/auth/login/',AuthController.login);
+app.get('/auth/renrenCallback',AuthController.renrenCallback);
+
 
 
 //Canteen
@@ -60,6 +71,9 @@ app.post('/canteen/:id/',CanteenController.update);
 
 //Dish
 app.post('/dishes/',DishController.create);
+app.post('/dish/:id/',DishController.update);
+app.post('/dish/:id/comment/',DishController.comment);
+
 
 //Admin
 app.get('/admin/',AdminController.index);
@@ -69,9 +83,11 @@ app.get('/admin/dish/',AdminController.manageDish);
 
 //Api
 app.get('/api/randomDish/',ApiController.randomDish);
+app.get('/api/canteen/:id/dishes/',ApiController.dishList);
 app.get('/api/canteen/:id/',ApiController.canteen);
+app.get('/api/dish/:id/',ApiController.dish);
+app.post('/api/canteens/',ApiController.canteenList)
 app.post('/api/canteen/random/',ApiController.randomCanteen);
-
 
 app.listen(app.get('port'));
 console.log("Server listening on port " + app.get('port'));

@@ -1,38 +1,60 @@
 {% extends 'layout.html' %}
 
-{% block content %}
+{% block extra_css %}
+<style type="text/css">
+.dishList{
+	box-shadow: 0 0 5px #333 inset;
+	padding: 5px;
+	display: none;
+}
 
-<div class="row-fluid">
-	<!--
-    <div class="span3">
-      <div class="well sidebar-nav">
-        <ul class="nav nav-list" id="managerSidebar">
-        	<li id="manageCanteen"><a href="javascript:AdminController.manageCanteen();">食堂管理</a></li>
-        	<li id="manageDish"><a href="javascript:AdminController.manageDish();">食物管理</a></li>
-        </ul>
-      </div>
-    </div>-->
- <div class="span12" id="mainContent">
- 	<div class="row-fluid">
-	{% for canteen in canteenList %}
-	<div class="row-fluid">
+.canteenNavBar{
+	box-shadow: 0 0 5px #333;
+	border-radius: 2px;
+	padding: 5px 15px;
+}
+</style>
+{% endblock %}
+{% block content %}
+<script type="text/template" id="canteenNavBarTemplate">
 		<div class="span12">
 			<div class="span2">
-				<h2>{{canteen.name}}</h2>
+				<a class="canteenTitle" href="javascript:void;"><h2><%=canteen.name%></h2></a>
 			</div>
 			<div class="span6">
-				{{canteen.description}}
+				<%=canteen.description%>
 			</div>
 			<div class="span4">
-				<a class="btn" href="javascript:AdminController.editCanteenForm('{{canteen._id}}')">编辑</a>
+				<a class="btn" href="javascript:AdminController.editCanteenForm('<%=canteen._id%>')">编辑</a>
 				<a class="btn">删除</a>
-				<a class="btn">新建食物</a>
+				<a class="btn" href="javascript:AdminController.newDishForm('<%=canteen._id%>')">新建食物</a>
 			</div>
 		</div>
-	</div>
-	{% endfor %}
+		<div class="clear-fix"></div>
+</script>
+<script type="text/template" id="dishGridTemplate">
+			<div class="span10">
+				<h2><%= dish.name %></h2>
+			</div>
+			<div class="span10">
+				<img src="<%= dish.previewUrl %>">
+			</div>
+			<div class="span10">
+				<%=dish.description%>
+			</div>
+			<div class="span10">
+				<a class="btn" href="javascript:AdminController.editDishForm('<%=dish._id%>');">编辑</a>
+				<a class="btn">删除</a>
+			</div>
+</script>
+
+<div class="row-fluid content-background">
+ <div class="span12" id="mainContent">
+ 	<div class="row-fluid" >
+ 		<div class="span12" id="canteenList">
+		</div>
 	<div class="span6 offset6">
-	<a class="btn" href="#create-canteen-modal" role="button" data-toggle="modal">新建食堂</a>
+		<a class="btn" href="#create-canteen-modal" role="button" data-toggle="modal">新建食堂</a>
 	</div>
 </div>
 <div class="modal hide fade" id="create-canteen-modal" tabindex="-1" role="dialog" aria-hidden="true">
@@ -73,7 +95,7 @@
 <div class="modal hide fade" id="edit-canteen-modal" tabindex="-1" role="dialog" aria-hidden="true">
 	<form class="form-horizontal" id="editCanteenForm" action="/canteen/" method="post">
 		<div class="modal-header">
-		<legend id="formName">编辑食堂</legend>
+			<legend id="formName">编辑食堂</legend>
 		</div>
 		<div class="modal-body">
 			<div class="control-group">
@@ -104,6 +126,113 @@
 		</div>
 	</form>
 </div>
+
+<div class="modal hide fade" id="create-dish-modal" tabindex="-1" role="dialog" aria-hidden="true">
+	<form class="form-horizontal" id="newDishForm" action="/dishes/" method="post">
+		<div class="modal-header">
+			<legend id="formName">新建食物</legend>
+		</div>
+		<div class="control-group">
+			<label class="control-label">名称</label>
+			<div class="controls">
+				<input type="text" placeholder="请输入食物名称" name="dishName">
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label">描述</label>
+			<div class="controls">
+				<textarea name="dishDescription" rows="3"></textarea>
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label">所属餐厅</label>
+			<div class="controls">
+				{% for canteen in canteenList %}
+				<label class="radio">
+					<input type="radio" name="canteenId" value="{{canteen._id}}">{{canteen.name}}
+				</label>
+				{% endfor %}
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label">大致方位</label>
+			<div class="controls">
+				<input type="text"  placeholder="填写此项以帮助定位~" name="dishLocation">
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label">价格</label>
+			<div class="controls">
+				<input type="text"  name="dishPrice">
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label">预览图片（可选）</label>
+			<div class="controls">
+				<input type="file"  name="dishPreview">
+			</div>
+		</div>
+		<div class="control-group">
+			<div class="controls">
+				<input type="submit" class="btn" id="createCanteenSubmit" value="新建>>">
+			</div>
+		</div>
+	</form>
+</div>
+
+<div class="modal hide fade" id="edit-dish-modal" tabindex="-1" role="dialog" aria-hidden="true">
+	<form class="form-horizontal" id="editDishForm" action="/dishes/" method="post">
+		<div class="modal-header">
+			<legend id="formName">编辑食物</legend>
+		</div>
+		<div class="control-group">
+			<label class="control-label">名称</label>
+			<div class="controls">
+				<input type="text" placeholder="请输入食物名称" name="dishName">
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label">描述</label>
+			<div class="controls">
+				<textarea name="dishDescription" rows="3"></textarea>
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label">所属餐厅</label>
+			<div class="controls">
+				{% for canteen in canteenList %}
+				<label class="radio">
+					<input type="radio" name="canteenId" value="{{canteen._id}}">{{canteen.name}}
+				</label>
+				{% endfor %}
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label">大致方位</label>
+			<div class="controls">
+				<input type="text"  placeholder="填写此项以帮助定位~" name="dishLocation">
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label">价格</label>
+			<div class="controls">
+				<input type="text"  name="dishPrice">
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label">预览图片（可选）</label>
+			<div class="controls">
+				<input type="file"  name="dishPreview">
+			</div>
+		</div>
+		<div class="control-group">
+			<div class="controls">
+				<input type="submit" class="btn" id="createCanteenSubmit" value="保存>>">
+			</div>
+		</div>
+	</form>
+</div>
+
  </div>
 </div>
 
@@ -113,58 +242,93 @@
 <script type="text/javascript" src="/js/jquery.form.js"></script>
 <script type="text/javascript" src="/js/admin.js"></script>
 <script type="text/javascript">
+var canteenList = [];
+var canteenNavBarList = [];
+var canteenNavBarTemplate = _.template($("#canteenNavBarTemplate").html());
+var dishGridTemplate = _.template($("#dishGridTemplate").html());
+var Canteen = Backbone.Model.extend({
 
+});
+var Dish = Backbone.Model.extend({});
 
-/*
-AdminController.manageCanteen = function(){
-	$.ajax({
-		url:'/admin/canteen/',
-		type:'get',
-		success:function(html){
-			$("#mainContent").html(html);
-			$("#managerSidebar li").each(function(v){
-				$(this).removeClass("active");
+var DishView = Backbone.View.extend({
+	initialize:function(){
+		this.render();
+	},
+	render:function(){
+		var html = dishGridTemplate({"dish":this.model._currentAttributes});
+		this.$el.html(html);
+	}
+});
+var CanteenView = Backbone.View.extend({
+	initialize:function(){
+		this.render();
+	},
+	render:function(){
+		var html = canteenNavBarTemplate({"canteen":this.model._currentAttributes});
+		this.$el.html(html);
+		var self = this;
+		AdminController.getDishList(this.model._currentAttributes._id,function(dishes){
+			var listView = self.$el.next()[0];
+			listView.setAttribute("class","dishList");
+			var dishModelList = [];
+			for(var i = 0;i < dishes.length;i++){
+				var dish = new Dish(dishes[i]);
+				console.log(dishes[i]);
+				dishModelList.push(dish);
+			}
+			
+			for (var i = 0; i < dishModelList.length; i++) {
+				var newDom = document.createElement("div");
+				newDom.setAttribute("class","span4");
+				listView.appendChild(newDom);
+				var m = dishModelList[i];
+				new DishView({el:newDom,model:m});
+			};
+			var dom = document.createElement("div");
+			dom.setAttribute("class","clear-fix");
+			listView.appendChild(dom);
+		});
+	},
+	events:{
+		"click .canteenTitle": "toggleDishList"
+	},
+	"toggleDishList":function(){
+		if(this.$el.next().is(":visible")){
+			this.$el.next().slideUp();
+		}else{
+			this.$el.next().slideDown();
+		}
+	}
+});
+
+$.ajax({
+	url:"/api/canteens/",
+	dataType:"json",
+	type:"post",
+	success:function(result){
+		var listDOM = $("#canteenList");
+
+		for(var i = 0;i < result.length;i++){
+			var canteen = new Canteen(result[i]);
+			var dishesView = Backbone.View.extend({
+
 			});
-			$("#manageCanteen").addClass("active");
-		},
-		error:function(){
+			var newDom = document.createElement("div");
+			$("#canteenList")[0].appendChild(newDom);
+			newDom.setAttribute("class","canteenNavBar clear-fix");
+			
+			var nextnewDom = document.createElement("div");
+			$("#canteenList")[0].appendChild(nextnewDom);
+			nextnewDom.setAttribute("class","dishList clear-fix");
 
+			var view = new CanteenView({el:newDom,model:canteen});
+			canteenNavBarList.push(view);
 		}
-	});
-}
-AdminController.manageDish = function(){
-	$.ajax({
-		url:'/admin/dish/',
-		type:'get',
-		success:function(html){
-			$("#mainContent").html(html);
-			$("#managerSidebar li").each(function(v){
-				$(this).removeClass("active");
-			});
-			$("#manageDish").addClass("active");
-			//Util.notifySuccess();
-		},
-		error:function(){
-
-		}
-	});
-}
+	}
+});
 
 
-AdminController.createCanteen = function(data,callback){
-	$.ajax({
-		url:'/canteens/',
-		type:'POST',
-		data:data,
-		success:function(res){
-			Util.notifySuccess();
-			callback({OK:true});
-		},
-		error:function(res){
-			callback({OK:false});
-		}
-	});
-}*/
 AdminController.editCanteenForm = function(id){
 	$.ajax({
 		url:'/api/canteen/' + id + '/',
@@ -180,9 +344,49 @@ AdminController.editCanteenForm = function(id){
 			
 		},
 		error:function(data){
-
 		}
 	});
+}
+
+AdminController.newDishForm = function(canteenId){
+	$("#newDishForm").find("input[value=" + canteenId + "]").attr("checked","checked");
+	$("#create-dish-modal").modal("show");
+}
+AdminController.editDishForm = function(id){
+	$.ajax({
+		url:'/api/dish/' + id + '/',
+		type:'get',
+		dataType:'json',
+		success:function(data){
+			console.log(data);
+			var form = $("#editDishForm");
+			form.attr("action","/dish/" + id + "/");
+			form.find('input[name=dishName]').val(data.name);
+			form.find('input[name=dishPrice]').val(data.price);
+			form.find('input[name=dishLocation]').val(data.location);
+			form.find('input[value=' + data.canteenId + ']').attr("checked","checked");
+			form.find('textarea[name=dishDescription]').val(data.description);
+			$("#edit-dish-modal").modal('show');
+		},
+		error:function(data){
+			Util.notifyError();
+		}
+	});
+}
+
+
+AdminController.getDishList = function(canteenId,outerCallback){
+	$.ajax({
+		url:"/api/canteen/" + canteenId + "/dishes/",
+		type:"get",
+		dataType:"json",
+		success:function(result){
+			outerCallback(result);
+		},
+		error:function(){
+
+		}
+	})
 }
 
 $("#createCanteenForm").ajaxForm({
@@ -191,6 +395,8 @@ $("#createCanteenForm").ajaxForm({
 		$("#create-canteen-modal").modal('hide');
 	},
 	error:function(){
+		Util.notifyError();
+		$("#create-canteen-modal").modal('hide');
 	},
 	clearForm:true
 });
@@ -201,6 +407,33 @@ $("#editCanteenForm").ajaxForm({
 		$("#edit-canteen-modal").modal('hide');
 	},
 	error:function(){
+		Util.notifyError();
+		$("#edit-canteen-modal").modal('hide');
+	},
+	clearForm:true
+});
+
+
+$("#newDishForm").ajaxForm({
+	success:function(){
+		Util.notifySuccess();
+		$("#create-dish-modal").modal('hide');
+	},
+	error:function(){
+		Util.notifyError();
+		$("#create-dish-modal").modal('hide');
+	},
+	clearForm:true
+});
+
+$("#editDishForm").ajaxForm({
+	success:function(){
+		Util.notifySuccess();
+		$("#edit-dish-modal").modal('hide');
+	},
+	error:function(){
+		Util.notifyError();
+		$("#edit-dish-modal").modal('hide');
 	},
 	clearForm:true
 });

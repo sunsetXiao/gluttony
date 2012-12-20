@@ -22,6 +22,7 @@ Dish.create = function(data,outerCallback){
 		description:data.dishDescription,
 		price:data.dishPrice,
 		previewUrl:data.previewUrl,
+		location:data.dishLocation,
 		rates:[],
 		comments:[]
 	},{safe:true},outerCallback);
@@ -45,6 +46,9 @@ Dish.findByCanteenId = function(canteenId,outerCallback){
 	db.Dish.findItems({"canteenId":canteenId},outerCallback);
 }
 Dish.prototype.update = function(outerCallback){
+	if(this.data.canteenId && (typeof(this.data.canteenId) == "string")){
+		this.data.canteenId = new ObjectID(this.data.canteenId);
+	}
 	db.Dish.update({_id:this.data._id},this.data,{safe:true},outerCallback);
 }
 

@@ -11,7 +11,7 @@ var CanteenController = exports.CanteenController = function(){};
 CanteenController.index = function(req,res){
 	Canteen.find({},function(err,canteenList){
 		if (canteenList)
-			res.render('index.html',{canteenList:canteenList});
+			res.render('index.html',{canteenList:canteenList,user:req.session.user});
 	});
 }
 
