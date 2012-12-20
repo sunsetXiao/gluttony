@@ -2,6 +2,7 @@
 
 {% block extra_css %}
 <link rel="stylesheet" type="text/css" href="/css/jquery.rating.css">
+<link rel="stylesheet" type="text/css" href="/css/canteen.css">
 <style type="text/css">
 .inner{
 	width:1080px;
@@ -13,16 +14,7 @@
     *width: 30.570740134569924%;
  }
   .row-fluid .span5{
-  	width: 47.623931623931625%;
-  }
-
-.modal {
-	width:950px;
-	left: 40%;
-}
-
-.modal-body{
-  	max-height: 400px;
+  	width: 40.623931623931625%;
   }
 
 .dish-comment{
@@ -35,144 +27,22 @@
  	padding: 5px 10px;
  	
  }
+ .imgContainer img{
+ 	
+ }
 .dish-comment .avatar img{
  	width: 50px;
  	height: 50px;
+ 	margin-left: auto;
+ 	margin-right: auto;
  }
- textarea{
-width: 95%;
+textarea{
+width: 83%;
  }
 
 </style>
 {% endblock %}
 {% block content %}
-<script type="text/template" id="dishGridTemplate">
-<div class="span12">
-	<h2>
-	<a><%=dish.name%></a>
-	</h2>
-</div>
-<hr>
-<div class="span8 offset2">
-	<%= if dish.previewUrl %>
-	<img src="<%=dish.previewUrl%>">
-	<%= else %>
-	<img src="/img/food-example.jpg">
-	<%= endif %>
-</div>
-<hr>
-<div class="span12">
-	{% if dish.price %}
-		价格：{{dish.price}}
-	{% else %}
-		暂无价格描述
-	{% endif %}
-</div>
-<hr>
-<div class="span12">
-	{% if dish.description %}
-		{{dish.description}}
-	{% else %}
-		暂无描述
-	{% endif %}
-</div>
-</script>
-<script type="text/template" id="dishModalTemplate">
-<div class="modal-header">
-	<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-	<h3><%= dish.name %></h3>
-</div>
-<div class="row-fluid">
-		<div class="span6 modal-body">
-			<div class="imgContainer">
-				<a>
-					<img src=" <%= dish.previewUrl %>">
-				</a>
-				<div class="caption">
-					<p>价格：<%=dish.price%></p>
-					<p>地点: <%=dish.location%></p>
-				</div>
-			</div>
-			<div >描述:<%= dish.description %>
-			</div>
-		</div>
-		<div class="span5 modal-body">
-			<div>评分为: <span class="pull-right">已有6人评分</span></div>
-			<div>
-				<div class="dish-comment row-fluid">
-					<div class="span2 avatar">
-						<img  src="/img/defaultHead.png">
-					</div>
-					<div class="span10">
-						<form class="form" id="dishCommentForm" action="/dish/<%=dish._id%>/comment/" method="post">
-							<textarea rows="3" cols="30" name="commentConent"></textarea>
-							<div>
-								<input name="commentRate" type="radio" class="star"/>
-								<input name="commentRate" type="radio" class="star"/>
-								<input name="commentRate" type="radio" class="star"/>
-								<input name="commentRate" type="radio" class="star"/>
-								<input name="commentRate" type="radio" class="star"/>
-							</div>
-						  	<button type="submit" class="btn pull-right">评论</button>
-						</form>
-					</div>
-				</div>
-				
-				<div class="dish-comment row-fluid">
-					<div class="span2 avatar">
-						<img  src="/img/defaultHead.png">
-					</div>
-					<div class="span10 content">
-						<div class="">
-							<div class="arrow"></div>
-							这道菜很有风味，比较正宗，不错
-							<div class="pull-right" style="font-size:8px;">2012年12月29日 21:14</div>
-						</div>
-					</div>
-				</div>
-				<div class="dish-comment row-fluid">
-					<div class="span2 avatar">
-						<img  src="/img/defaultHead.png">
-					</div>
-					<div class="span10 content">
-						<div class="">
-							<div class="arrow"></div>
-							这道菜很有风味，比较正宗，不错, 哈哈.这道菜很有风味，比较正宗，不错, 哈哈.这道菜很有风味，比较正宗，不错, 哈哈.这道菜很有风味，比较正宗，不错, 哈哈
-							<div class="pull-right" style="font-size:8px;">2012年12月29日 21:14</div>
-						</div>
-					</div>
-				</div>
-				<div class="dish-comment row-fluid">
-					<div class="span2 avatar">
-						<img  src="/img/defaultHead.png">
-					</div>
-					<div class="span10 content">
-						<div class="">
-							<div class="arrow"></div>
-							这道菜很有风味，比较正宗，不错, 哈哈.这道菜很有风味，比较正宗，不错, 哈哈.这道菜很有风味，比较正宗，不错, 哈哈.这道菜很有风味，比较正宗，不错, 哈哈
-							<div class="pull-right" style="font-size:8px;">2012年12月29日 21:14</div>
-						</div>
-					</div>
-				</div>
-				<div class="dish-comment row-fluid">
-					<div class="span2 avatar">
-						<img  src="/img/defaultHead.png">
-					</div>
-					<div class="span10 content">
-						<div class="">
-							<div class="arrow"></div>
-							这道菜很有风味，比较正宗，不错, 哈哈.这道菜很有风味，比较正宗，不错, 哈哈.这道菜很有风味，比较正宗，不错, 哈哈.这道菜很有风味，比较正宗，不错, 哈哈
-							<div class="pull-right" style="font-size:8px;">2012年12月29日 21:14</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
-<div class="modal-footer">
-</div>
-</script>
 <div class="container">
 	<div class="row-fluid content-background">
 		<div class="span3">
@@ -184,33 +54,105 @@ width: 95%;
 			<h1>食物列表</h1>
 			<hr class="title-splitor" height="40px;">
 				{% for dish in canteen.dishes %}
-					<div class="span4 food-grid">
-						<div class="span12"><h2><a href="javascript:CanteenController.showDishModal('{{dish._id}}')">{{dish.name}}</a></h2></div>
-						<hr>
-						<div class="span8 offset2">
-							{% if dish.previewUrl %}
-								<img src="{{dish.previewUrl}}">
-							{% else %}
-								<img src="/img/food-example.jpg">
-							{% endif %}
+					<div class="dish-item">
+					<div class="dish-bar row-fluid">
+						<div class="span2">
+							<a href="javascript:void;"  class="dish-name"><h4>{{dish.name}}</h4></a>
 						</div>
-						<hr>
-						<div class="span12">
-							{% if dish.price %}
-								价格：{{dish.price}}
-							{% else %}
-								暂无价格描述
-							{% endif %}
+						<div class="span2">
+							<p class="remark">
+								{% if dish.price %}
+									价格:{{dish.price}}
+								{% endif %}
+							</p>
+							<p class="remark">
+								{% if dish.location %}
+									位置:{{dish.location}}
+								{% endif %}
+							</p>
 						</div>
-						<hr>
-						<div class="span12">
+						<div class="span4">
 							{% if dish.description %}
 								{{dish.description}}
 							{% else %}
 								暂无描述
 							{% endif %}
 						</div>
+						<div class="span4" style="display:table-cell;vertical-align:middle;">
+							<div class="pull-right">
+								<a href="javascript:void" data-dish-id="{{dish._id}}" class="like-dish-btn">
+									{% if dish.isLike %}
+										<i class="icon small_like_active"></i>
+									{% else %}
+										<i class="icon small_like_inactive"></i>
+									{% endif %}
+								</a>
+								<span>
+									{{dish.likeNumber}}
+								</span>
+							</div>
+						</div>
 					</div>
+					<div class="dish-detail row-fluid">
+						<div class="span4 col">
+							{% if dish.previewUrl %}
+							<div class="imgContainer"><a><img src=" {{ dish.previewUrl }}"></a>
+								<div class="caption">
+									{% if dish.description %}{{dish.description}}
+									{% else %}暂无描述{% endif %}
+								</div>
+							</div>
+							{% else %}
+								<div class="imgContainer"><a><img src=" /img/default-dish.jpg"></a>
+								<div class="caption">
+									{% if dish.description %}{{dish.description}}
+									{% else %}暂无描述{% endif %}
+								</div>
+							</div>
+							{% endif %}
+						</div>
+						<div class="span8 col">
+							<div class="dish-comment row-fluid">
+								<div class="span2">
+									{% if user%}
+										<div class="avatar">
+											<img src="{{user.avatarUrl}}">
+										</div>
+										<p>{{user.name}}</p>
+									{% else %}
+										<div class="avatar">
+											<img src="/img/defaultHead.png">
+										</div>
+										<p></p>
+									{% endif %}
+								</div>
+								<div class="span10">
+									<form class="form dish-comment-form" action="/dish/{{dish._id}}/comment/" method="post">
+										<textarea rows="3" cols="30" name="commentContent"></textarea>
+									  	<button type="submit" class="btn pull-right">评论</button>
+									</form>
+								</div>
+							</div>
+							{% for comment in dish.comments %}
+								<div class="dish-comment row-fluid">
+									<div class="span2">
+										<div class="avatar">
+											<img src="{{comment.commentor.avatarUrl}}">
+										</div>
+										<p>{{comment.commentor.name}}</p>
+									</div>
+									<div class="span10 content">
+										<div class="">
+											<div class="arrow"></div>
+											{{comment.content}}
+											<div class="pull-right" style="font-size:8px;">{{comment.time|date('Y年n月j日 G:i')}}</div>
+										</div>
+									</div>
+								</div>
+							{% endfor %}
+						</div>
+					</div>
+				</div>
 				{% endfor %}
 		</div>
 		
@@ -225,28 +167,51 @@ width: 95%;
 {% block extra_js %}
 <SCRIPT TYPE="text/javascript" src="/js/jquery.rating.js"></SCRIPT>
 <script type="text/javascript" src="/js/canteen.js"></script>
-
+<script type="text/javascript" src="/js/jquery.form.js"></script>
 <script type="text/javascript">
-var dishModalTemplate = _.template($("#dishModalTemplate").html());
-CanteenController.showDishModal = function(dishId){
+CanteenController.toggleDishLike = function(){
+
+}
+$(".dish-item").each(function(){
+	var self = $(this);
+	self.find(".dish-bar .dish-name").click(function(){
+		self.find(".dish-detail").toggle(500);
+	});
+});
+
+$(".like-dish-btn").click(function(err){
+	var self = $(this);
+	var dishId = self.attr("data-dish-id");
 	$.ajax({
-		url:"/api/dish/" + dishId + "/",
-		type:"get",
+		url:'/dish/' + dishId + '/toggleLike/',
+		type:"post",
 		dataType:"json",
-		success:function(result){
-			var html = dishModalTemplate({'dish':result});
-			$("#dishDisplayModal").html(html).modal("show");
-			$("#dishCommentForm").ajaxForm({
-				success:function(){
-					notifySuccess();
-				},
-				error:function(){
-					notifyError();
-				}
-			});
+		success:function(res){
+			var i = self.find("i");
+			if(res.isLike){
+				i.addClass("small_like_active");
+				i.removeClass("small_like_inactive");
+			}else{
+				i.removeClass("small_like_active");
+				i.addClass("small_like_inactive");
+			}
+			var span = self.next("span");
+			span.html(res.count);
+		},
+		error:function(){
+			Util.notifyError();
 		}
 	})
-}
+});
+$(".dish-comment-form").ajaxForm({
+	success:function(){
+		Util.notifySuccess();
+	},
+	error:function(){
+		Util.notifyError();
+	},
+	clearForm:true
+});
 </script>
 
 {% endblock %}

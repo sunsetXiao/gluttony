@@ -73,7 +73,7 @@ app.post('/canteen/:id/',CanteenController.update);
 app.post('/dishes/',DishController.create);
 app.post('/dish/:id/',DishController.update);
 app.post('/dish/:id/comment/',DishController.comment);
-
+app.post('/dish/:id/toggleLike/',DishController.toggleLike);
 
 //Admin
 app.get('/admin/',AdminController.index);

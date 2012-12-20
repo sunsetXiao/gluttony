@@ -42,10 +42,18 @@ a:hover{
 hr.title-splitor{
   color:#444;
   width: 100%;
-  margin-left: auto;
-  margin-right: auto;
-  margin-bottom: 2px;
+  margin-bottom: 8px;
   margin-top: 2px;
+  height: 10px;
+background: rgb(167,199,220); /* Old browsers */
+background: -moz-linear-gradient(top,  rgba(167,199,220,1) 0%, rgba(133,178,211,1) 100%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(167,199,220,1)), color-stop(100%,rgba(133,178,211,1))); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(top,  rgba(167,199,220,1) 0%,rgba(133,178,211,1) 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(top,  rgba(167,199,220,1) 0%,rgba(133,178,211,1) 100%); /* Opera 11.10+ */
+background: -ms-linear-gradient(top,  rgba(167,199,220,1) 0%,rgba(133,178,211,1) 100%); /* IE10+ */
+background: linear-gradient(to bottom,  rgba(167,199,220,1) 0%,rgba(133,178,211,1) 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a7c7dc', endColorstr='#85b2d3',GradientType=0 ); /* IE6-9 */
+
 }
 
 .clear-fix{
@@ -66,4 +74,33 @@ hr.title-splitor{
   padding: 5px 10px;
   background: rgba(0,0,0,0.75);
   color: #fff;
+}
+
+.remark{
+  font-size: 5px;
+  margin:0;
+  padding: 1px;
+  vertical-align: middle;
+}
+
+.icon{
+display: inline-block;
+transition-property: background-position;
+transition-duration: 0.5s;
+-moz-transition-property: background-position;
+-moz-transition-duration: 0.5s;
+-webkit-transition-property: background-position;
+-webkit-transition-duration: 0.5s
+}
+
+.small_like_inactive{
+  width: 12px;
+height: 12px;
+background: url("../img/icons.png") 0px -120px no-repeat;
+}
+
+.small_like_active{
+    width: 12px;
+height: 12px;
+background: url("../img/icons.png") 0px -132px no-repeat;
 }

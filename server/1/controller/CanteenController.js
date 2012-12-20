@@ -2,7 +2,8 @@ var Canteen = require("../model/Canteen").Canteen,
 	Dish = require("../model/Dish").Dish,
 	FileHandler = require('../model/FileHandler').FileHandler,
 	async = require('async'),
-	config = require('../config')
+	config = require('../config'),
+	DishLikedIndex = require("../model/index/DishLikedIndex").DishLikedIndex
 	;
 
 var CanteenController = exports.CanteenController = function(){};
@@ -86,17 +87,33 @@ CanteenController.update = function(req,res){
 }
 CanteenController.canteen = function(req,res){
 	if(req.params.id){
-		Canteen.findById(req.params.id,function(err,item){
-			if(item){
-				Dish.findByCanteenId(item._id,function(err,items){
-					item.dishes = items;
-					res.render("canteen/canteen.html",{canteen:item});
+		Canteen.findById(req.params.id,function(err,canteen){
+			if(canteen){
+				Dish.findByCanteenId(canteen._id,function(err,items){
+					async.map(items,function(dish,mapCallback){
+						DishLikedIndex.countByDishId(dish._id,function(err,count){
+							dish.likeNumber = count;
+							if(req.session.user){
+								DishLikedIndex.hadLiked(req.session.user._id,dish._id,function(err,doc){
+									if(doc) dish.isLike = true;
+									mapCallback(err,dish);
+								});
+							}else{
+								mapCallback(err,dish);
+							}
+						});
+					},function(err,mappedDishes){
+						console.log(mappedDishes);
+						canteen.dishes = mappedDishes;
+						res.render("canteen/canteen.html",{canteen:canteen,user:req.session.user});
+					});
 				});
 			}
 			else{
 				res.send(404);
 			}
 		});
+		
 	}else{
 		res.send(404);
 	}

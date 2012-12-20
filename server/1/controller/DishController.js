@@ -3,6 +3,8 @@ var Dish = require('../model/Dish').Dish,
 	async = require('async'),
 	config = require('../config'),
 	Canteen = require("../model/Canteen").Canteen
+	User = require("../model/User").User
+	DishLikedIndex = require("../model/index/DishLikedIndex").DishLikedIndex
 	;
 
 var DishController = exports.DishController = function(){
@@ -97,26 +99,96 @@ DishController.update = function(req,res){
 
 DishController.comment = function(req,res){
 	if(req.params.id && req.body){
-		Dish.findById(req.params.id,function(err,dish){
-			if(dish){
-				var comments = dish.comments;
-				comments.add({
-					time:new Date(),
-					content:req.body.commentContent,
-					rate:req.body.rate
+		if(req.session.user){
+			async.waterfall([
+				function(waterfallCallback){
+					User.findById(req.session.user._id,function(err,user){
+						if(user){
+							waterfallCallback(err,user);
+						}else{
+							return res.send(403);
+						}
+					});
+				},
+				function(user,waterfallCallback){
+					Dish.findById(req.params.id,function(err,dish){
+						if(dish){
+							var comments = dish.comments;
+							comments.push({
+								time:new Date(),
+								content:req.body.commentContent,
+								commentor:user
+							});
+							var dishDAO = new Dish(dish);
+							dishDAO.update(function(err){
+								waterfallCallback(err);
+							});
+						}else{
+							return res.send(404);
+						}
+					});
+				}
+				],function(err){
+					if(err) res.send(500);
+					else res.send(200);
 				});
-				var dishDAO = new Dish(dish);
-				dishDAO.update(function(err){
-					if(err){
-						res.send(500);
-					}else{
-						res.send(200);
-					}
+		}else{
+			return res.send(401);
+		}
+		
+	}else{
+		res.send(404);
+	}
+}
+
+DishController.toggleLike = function(req,res){
+	if(req.params.id){
+		if(req.session.user){
+			async.waterfall([
+				function(waterfallCallback){
+					User.findById(req.session.user._id,function(err,user){
+						if(user){
+							waterfallCallback(err,user);
+						}else{
+							return res.send(403);
+						}
+					});
+				},
+				function(user,waterfallCallback){
+					Dish.findById(req.params.id,function(err,dish){
+						if(dish){
+							waterfallCallback(err,user,dish);
+						}else{
+							return res.send(404);
+						}
+					});
+				},
+				function(user,dish,waterfallCallback){
+					DishLikedIndex.hadLiked(user._id,dish._id,function(err,doc){
+						if(doc){
+							DishLikedIndex.update(user._id,dish._id,false,function(err){
+								waterfallCallback(err,false,dish);
+							});
+						}else{
+							DishLikedIndex.update(user._id,dish._id,true,function(err){
+								waterfallCallback(err,true,dish);
+							});
+						}
+					});
+				},
+				function(finalLike,dish,waterfallCallback){
+					DishLikedIndex.countByDishId(dish._id,function(err,count){
+						waterfallCallback(err,finalLike,count);
+					});
+				}
+				],function(err,finalLike,finalCount){
+					if(err) res.send(500);
+					else res.send({isLike:finalLike,count:finalCount});
 				});
-			}else{
-				res.send(404);
-			}
-		});
+		}else{
+			return res.send(401);
+		}
+		
 	}else{
 		res.send(404);
 	}
