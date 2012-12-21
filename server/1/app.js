@@ -74,6 +74,7 @@ app.post('/dishes/',DishController.create);
 app.post('/dish/:id/',DishController.update);
 app.post('/dish/:id/comment/',DishController.comment);
 app.post('/dish/:id/toggleLike/',DishController.toggleLike);
+app.post('/dish/:id/toggleTasted/',DishController.toggleTasted);
 
 //Admin
 app.get('/admin/',AdminController.index);

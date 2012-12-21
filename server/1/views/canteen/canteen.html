@@ -36,6 +36,7 @@
  	margin-left: auto;
  	margin-right: auto;
  }
+
 textarea{
 width: 83%;
  }
@@ -71,15 +72,15 @@ width: 83%;
 								{% endif %}
 							</p>
 						</div>
-						<div class="span4">
+						<div class="span6">
 							{% if dish.description %}
 								{{dish.description}}
 							{% else %}
 								暂无描述
 							{% endif %}
 						</div>
-						<div class="span4" style="display:table-cell;vertical-align:middle;">
-							<div class="pull-right">
+						<div class="span2" style="display:table-cell;vertical-align:middle;">
+							<div class="pull-right span12">
 								<a href="javascript:void" data-dish-id="{{dish._id}}" class="like-dish-btn">
 									{% if dish.isLike %}
 										<i class="icon small_like_active"></i>
@@ -89,6 +90,18 @@ width: 83%;
 								</a>
 								<span>
 									{{dish.likeNumber}}
+								</span>
+							</div>
+							<div class="pull-right span12">
+								<a href="javascript:void" data-dish-id="{{dish._id}}" class="taste-dish-btn">
+									{% if dish.hadTasted %}
+										<i class="icon small_taste_active"></i>
+									{% else %}
+										<i class="icon small_taste_inactive"></i>
+									{% endif %}
+								</a>
+								<span>
+									{{dish.tastedNumber}}
 								</span>
 							</div>
 						</div>
@@ -103,13 +116,26 @@ width: 83%;
 								</div>
 							</div>
 							{% else %}
-								<div class="imgContainer"><a><img src=" /img/default-dish.jpg"></a>
+							<div class="imgContainer"><a><img src=" /img/default-dish.jpg"></a>
 								<div class="caption">
 									{% if dish.description %}{{dish.description}}
 									{% else %}暂无描述{% endif %}
 								</div>
 							</div>
 							{% endif %}
+							<div >
+								
+								
+								{% if dish.tastedFriends %}
+									<p class="remark">你的朋友中</p>
+									<img class="tiny-avatar" src="/img/defaultHead.png">
+									<img class="tiny-avatar" src="/img/defaultHead.png">
+									{% for user in dish.tastedFriends %}
+										<img class="tiny-avatar" src="{{user.avatarUrl}}">
+									{% endfor %}
+									<p class="remark">也吃过这个菜</p>
+								{% endif %}
+							</div>
 						</div>
 						<div class="span8 col">
 							<div class="dish-comment row-fluid">
@@ -194,6 +220,30 @@ $(".like-dish-btn").click(function(err){
 			}else{
 				i.removeClass("small_like_active");
 				i.addClass("small_like_inactive");
+			}
+			var span = self.next("span");
+			span.html(res.count);
+		},
+		error:function(){
+			Util.notifyError();
+		}
+	})
+});
+$(".taste-dish-btn").click(function(err){
+	var self = $(this);
+	var dishId = self.attr("data-dish-id");
+	$.ajax({
+		url:'/dish/' + dishId + '/toggleTasted/',
+		type:"post",
+		dataType:"json",
+		success:function(res){
+			var i = self.find("i");
+			if(res.hadTasted){
+				i.addClass("small_taste_active");
+				i.removeClass("small_taste_inactive");
+			}else{
+				i.removeClass("small_taste_active");
+				i.addClass("small_taste_inactive");
 			}
 			var span = self.next("span");
 			span.html(res.count);

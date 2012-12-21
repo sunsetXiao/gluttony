@@ -13,3 +13,7 @@ RenrenUser.create = function(info,outerCallback){
 	db.RenrenUser.update({id:info.id},info,{safe:true,upsert:true},outerCallback);
 }
 
+RenrenUser.findByPlatformId = function(id,outerCallback){
+	db.RenrenUser.findOne({id:id},outerCallback);
+}
+

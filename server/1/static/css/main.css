@@ -104,3 +104,21 @@ background: url("../img/icons.png") 0px -120px no-repeat;
 height: 12px;
 background: url("../img/icons.png") 0px -132px no-repeat;
 }
+
+.small_taste_inactive{
+    width: 12px;
+height: 12px;
+background: url("../img/icons.png") 0px 0px no-repeat;
+}
+
+.small_taste_active{
+    width: 12px;
+height: 12px;
+background: url("../img/icons.png") 0px -12px no-repeat;
+}
+
+img.tiny-avatar{
+  width: 20px;
+  height: 20px;
+}
+
