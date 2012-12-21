@@ -47,24 +47,23 @@ $("#bannerCarousel").carousel();
     </div>
     <div class='row-fluid'>
       {% for canteen in canteenList %}
-      <div class="span3 canteen-grid">
-        <h1><a href='/canteen/{{canteen._id}}/'>{{canteen.name}}</a></h1>
-        <div class="span8 offset2" >
-          <img src="/img/canteen_sample.jpg">
+      {{loop.cycle("<div class='row-fluid'>","","")}}
+      <div class="span4 canteen-grid">
+        <div class="" style="position:relative">
+          <div>
+            <a href='/canteen/{{canteen._id}}/' class="title"><h3>{{canteen.name}}</h3></a>
+          </div>
+        </div>
+        <div class="" >
+          <img src="/img/canteen_sample.jpg" class="preview">
         </div>
         <hr>
-        <div class="span12" style="height:100px;">
-          {{canteen.description}}
+        <div class="" style="">
+          位置:清华大学东门外
         </div>
         <hr>
-        <div class="span12">
-          <p class="pull-right">评分：。一共有{{canteen.rates.length}}人对其评分</p>
-        </div>
-        <hr>
-        <div class="span12">
-          <p class="pull-right">共有{{canteen.comments.length}}条评论<a href="#"><em>点击查看评论>></em></a></p>
-        </div>
       </div>
+       {{loop.cycle("","","</div>")}}
       {% endfor %}
     </div>
   </div>

@@ -9,13 +9,10 @@
 	margin: 0 auto;
 }
 
-.row-fluid .span4 {
-    width: 30.623931623931625%;
-    *width: 30.570740134569924%;
+.row-fluid .span6 {
+	margin-left: 0;
+	margin-right: 1.2%;
  }
-  .row-fluid .span5{
-  	width: 40.623931623931625%;
-  }
 
 .dish-comment{
 	margin-bottom: 10px;
@@ -36,9 +33,15 @@
  	margin-left: auto;
  	margin-right: auto;
  }
-
+.canteen-sidebar{
+	padding: 15px 15px;
+}
+.canteen-sidebar img.preivew{
+	padding: 5%;
+	width: 90%;
+}
 textarea{
-width: 83%;
+width: 75%;
  }
 
 </style>
@@ -46,21 +49,22 @@ width: 83%;
 {% block content %}
 <div class="container">
 	<div class="row-fluid content-background">
-		<div class="span3">
-			<h1> {{canteen.name}} </h1>
-			<img src="{{canteen.previewUrl}}">
+		<div class="span3 canteen-sidebar">
+			<h2 class="title"> {{canteen.name}} </h2>
+			<img src="{{canteen.previewUrl}}" class="preivew">
+			<p class="remark">位置：清华大学观畴园餐厅一层</p>
 			<p> {{canteen.description}}</p>
 		</div>
 		<div class="span9">
-			<h1>食物列表</h1>
+			<h3 class="title">食物列表</h3>
 			<hr class="title-splitor" height="40px;">
 				{% for dish in canteen.dishes %}
-					<div class="dish-item">
+					<div class="dish-item span6">
 					<div class="dish-bar row-fluid">
-						<div class="span2">
-							<a href="javascript:void;"  class="dish-name"><h4>{{dish.name}}</h4></a>
+						<div class="span5">
+							<a href="javascript:void;"  class="dish-name"><h4 class="title">{{dish.name}}</h4></a>
 						</div>
-						<div class="span2">
+						<div class="span3">
 							<p class="remark">
 								{% if dish.price %}
 									价格:{{dish.price}}
@@ -72,14 +76,7 @@ width: 83%;
 								{% endif %}
 							</p>
 						</div>
-						<div class="span6">
-							{% if dish.description %}
-								{{dish.description}}
-							{% else %}
-								暂无描述
-							{% endif %}
-						</div>
-						<div class="span2" style="display:table-cell;vertical-align:middle;">
+						<div class="span4" style="display:table-cell;vertical-align:middle;">
 							<div class="pull-right span12">
 								<a href="javascript:void" data-dish-id="{{dish._id}}" class="like-dish-btn">
 									{% if dish.isLike %}
@@ -89,7 +86,7 @@ width: 83%;
 									{% endif %}
 								</a>
 								<span>
-									{{dish.likeNumber}}
+									{{dish.likeNumber}}人喜欢
 								</span>
 							</div>
 							<div class="pull-right span12">
@@ -101,13 +98,14 @@ width: 83%;
 									{% endif %}
 								</a>
 								<span>
-									{{dish.tastedNumber}}
+									{{dish.tastedNumber}}人吃过
 								</span>
 							</div>
 						</div>
 					</div>
 					<div class="dish-detail row-fluid">
-						<div class="span4 col">
+						<div class="col">
+							<!--
 							{% if dish.previewUrl %}
 							<div class="imgContainer"><a><img src=" {{ dish.previewUrl }}"></a>
 								<div class="caption">
@@ -122,10 +120,25 @@ width: 83%;
 									{% else %}暂无描述{% endif %}
 								</div>
 							</div>
-							{% endif %}
+							{% endif %}-->
+							<p class="remark">
+								{% if dish.price %}
+									价格:{{dish.price}}
+								{% endif %}
+							</p>
+							<p class="remark">
+								{% if dish.location %}
+									位置:{{dish.location}}
+								{% endif %}
+							</p>
+							<p class="remark">
+								{% if dish.description %}
+									{{dish.description}}
+								{% else %}
+									暂无描述
+								{% endif %}
+							</p>
 							<div >
-								
-								
 								{% if dish.tastedFriends %}
 									<p class="remark">你的朋友中</p>
 									<img class="tiny-avatar" src="/img/defaultHead.png">
@@ -136,8 +149,9 @@ width: 83%;
 									<p class="remark">也吃过这个菜</p>
 								{% endif %}
 							</div>
-						</div>
-						<div class="span8 col">
+							<hr>
+						<!--</div>
+						<div class="span8 col">-->
 							<div class="dish-comment row-fluid">
 								<div class="span2">
 									{% if user%}
@@ -179,6 +193,7 @@ width: 83%;
 						</div>
 					</div>
 				</div>
+				{{ loop.cycle("","<div class='clear-fix'></div>") }}
 				{% endfor %}
 		</div>
 		
@@ -222,7 +237,7 @@ $(".like-dish-btn").click(function(err){
 				i.addClass("small_like_inactive");
 			}
 			var span = self.next("span");
-			span.html(res.count);
+			span.html(res.count + "人喜欢");
 		},
 		error:function(){
 			Util.notifyError();
@@ -246,7 +261,7 @@ $(".taste-dish-btn").click(function(err){
 				i.addClass("small_taste_inactive");
 			}
 			var span = self.next("span");
-			span.html(res.count);
+			span.html(res.count + "人吃过");
 		},
 		error:function(){
 			Util.notifyError();
