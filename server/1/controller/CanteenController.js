@@ -23,6 +23,7 @@ CanteenController.create = function(req,res){
 	var postData = req.body;
 	var f = new FileHandler();
 	var data = {};
+	console.log("creating canteen");
 	async.waterfall([
 			function(waterfallCallback){
 				if(req.files.canteenPreview){
