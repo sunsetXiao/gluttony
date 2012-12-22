@@ -10,6 +10,7 @@
 		        "auto_reconnect": true,
 		        "url": "127.0.0.1:27017/gluttony?auto_reconnect=true"
 		    },
+		    "port":3000,
 		    "supportPlatform":["renren"],
 		     "renren":{
 		        "platform": "renren",
@@ -23,7 +24,25 @@
 		     }
 		},
 		"production":{
-
+			"db": {
+		        "host": "127.0.0.1",
+		        "database": "gluttony",
+		        "port": 27017,
+		        "auto_reconnect": true,
+		        "url": "127.0.0.1:27017/gluttony?auto_reconnect=true"
+		    },
+		    "port":80,
+		    "supportPlatform":["renren"],
+		     "renren":{
+		        "platform": "renren",
+		        "id":"222660",
+		        "key": "c05de2b6a6a341b79a1ddcc708a73b8d",
+		        "secret":"47d4f7af722f46bca399137b7811682d",
+		        "base_uri":"https://graph.renren.com/",
+		        "authorize_path":"/oauth/authorize",
+		        "redirect_uri":"http://166.111.81.223:3000/auth/renrenCallback",
+		        "access_path":"/oauth/token"
+		     }
 		}
 	}
 }

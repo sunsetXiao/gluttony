@@ -16,16 +16,8 @@ Dish.create = function(data,outerCallback){
 	if(typeof(data.canteenId) == "string"){
 		data.canteenId = new ObjectID(data.canteenId);
 	}
-	db.Dish.insert({
-		canteenId:data.canteenId,
-		name:data.dishName,
-		description:data.dishDescription,
-		price:data.dishPrice,
-		previewUrl:data.previewUrl,
-		location:data.dishLocation,
-		rates:[],
-		comments:[]
-	},{safe:true},outerCallback);
+
+	db.Dish.insert(data,{safe:true},outerCallback);
 }
 
 Dish.find = function(query,outerCallback){

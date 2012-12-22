@@ -14,13 +14,9 @@ var Canteen = exports.Canteen = function(data){
 **/
 Canteen.create = function(data,outerCallback){
 	console.log(data);
-	db.collection('Canteen').insert({
-		name:data.canteenName,
-		description:data.canteenDescription,
-		previewUrl:data.previewUrl,
-		rates:[],
-		comments:[]
-	},{safe:true},outerCallback);
+	data.comments = [];
+	data.rates = [];
+	db.collection('Canteen').insert(data,{safe:true},outerCallback);
 }
 
 Canteen.find = function(query,outerCallback){

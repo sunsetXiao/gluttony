@@ -15,7 +15,7 @@ var express = require('express'),
 
 
 app.configure(function(){
-  app.set('port', 3000);
+  app.set('port', config.port);
   app.set('views', __dirname + '/views');
   app.engine('.html', consolidate.swig);
   require('swig').init({ root: path.join(__dirname, 'views'), allowErrors: true,cache:false });

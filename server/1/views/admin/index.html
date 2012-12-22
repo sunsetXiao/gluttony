@@ -76,6 +76,24 @@
 				</div>
 			</div>
 			<div class="control-group">
+				<label class="control-label">食堂电话</label>
+				<div class="controls">
+					<input type="text" placeholder="" name="canteenPhone">
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">食堂位置</label>
+				<div class="controls">
+					<input type="text" placeholder="" name="canteenLocation">
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">食堂特色(以空格分隔)</label>
+				<div class="controls">
+					<input type="text" placeholder="" name="canteenSpecial">
+				</div>
+			</div>
+			<div class="control-group">
 				<label class="control-label">描述图片</label>
 				<div class="controls">
 					<input type="file" name="canteenPreview" />
@@ -108,6 +126,24 @@
 				<label class="control-label">食堂描述</label>
 				<div class="controls">
 					<textarea name="canteenDescription" rows="3"></textarea>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">食堂电话</label>
+				<div class="controls">
+					<input type="text" placeholder="" name="canteenPhone">
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">食堂位置</label>
+				<div class="controls">
+					<input type="text" placeholder="" name="canteenLocation">
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">食堂特色(以空格分隔)</label>
+				<div class="controls">
+					<input type="text" placeholder="" name="canteenSpecial">
 				</div>
 			</div>
 			<div class="control-group">
@@ -161,6 +197,18 @@
 			</div>
 		</div>
 		<div class="control-group">
+			<label class="control-label">分类</label>
+			<div class="controls">
+				<input type="text"  placeholder="" name="dishCategory">
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label">限制</label>
+			<div class="controls">
+				<input type="text"  placeholder="" name="dishConstraint">
+			</div>
+		</div>
+		<div class="control-group">
 			<label class="control-label">价格</label>
 			<div class="controls">
 				<input type="text"  name="dishPrice">
@@ -211,6 +259,18 @@
 			<label class="control-label">大致方位</label>
 			<div class="controls">
 				<input type="text"  placeholder="填写此项以帮助定位~" name="dishLocation">
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label">分类</label>
+			<div class="controls">
+				<input type="text"  placeholder="" name="dishCategory">
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label">限制</label>
+			<div class="controls">
+				<input type="text"  placeholder="" name="dishConstraint">
 			</div>
 		</div>
 		<div class="control-group">
@@ -337,9 +397,14 @@ AdminController.editCanteenForm = function(id){
 		success:function(data){
 			console.log(data);
 			var form = $("#editCanteenForm");
+			var htmlData = {};
+			_CANTEEN_SCHEMA2POST(data,htmlData);
 			form.attr("action","/canteen/" + id + "/");
-			form.find('input[name=canteenName]').val(data.name);
-			form.find('textarea[name=canteenDescription]').val(data.description);
+			for(field in htmlData){
+				form.find('[name=' + field + "]").val(htmlData[field]);
+			}
+			//form.find('input[name=canteenName]').val(data.name);
+			//form.find('textarea[name=canteenDescription]').val(data.description);
 			$("#edit-canteen-modal").modal('show');
 			
 		},
@@ -347,7 +412,36 @@ AdminController.editCanteenForm = function(id){
 		}
 	});
 }
+function _CANTEEN_SCHEMA2POST(schema,post){
+	post.canteenName = schema.name;
+	post.canteenDescription = schema.description;
+	post.canteenLocation = schema.location;
+	post.canteenPhone = schema.phone;
+	if(schema.special && schema.special.length > 0){
+		post.canteenSpecial = "";
+		for(var i = 0;i < schema.special.length - 1;i++){
+			post.canteenSpecial += schema.special[i] + " ";
+		}
+		post.canteenSpecial += schema.special[schema.special.length - 1];
+	}else{
+		post.canteenSpecial = "";
+	}
+}
 
+function _DISH_SCHEMA2POST(schema,post){
+	post.dishName = schema.name;
+	post.dishDescription = schema.description;
+	post.dishPrice = schema.price;
+	post.dishLocation = schema.location;
+	post.dishCategory = schema.category;
+	post.dishConstraints = "";
+	if(schema.constraints && schema.constraints.length > 0){
+		for(var i = 0;i < schema.constraints.length - 1;i++){
+			post.dishConstraints += schema.constraints[i] + " ";
+		}
+		post.dishConstraints += schema.constraints[schema.constraints.length - 1];
+	}
+}
 AdminController.newDishForm = function(canteenId){
 	$("#newDishForm").find("input[value=" + canteenId + "]").attr("checked","checked");
 	$("#create-dish-modal").modal("show");
@@ -361,11 +455,16 @@ AdminController.editDishForm = function(id){
 			console.log(data);
 			var form = $("#editDishForm");
 			form.attr("action","/dish/" + id + "/");
-			form.find('input[name=dishName]').val(data.name);
-			form.find('input[name=dishPrice]').val(data.price);
-			form.find('input[name=dishLocation]').val(data.location);
+			var htmlData = {};
+			_DISH_SCHEMA2POST(data,htmlData);
+			for(field in htmlData){
+				form.find('[name=' + field + "]").val(htmlData[field]);
+			}
+			//form.find('input[name=dishName]').val(data.name);
+			//form.find('input[name=dishPrice]').val(data.price);
+			//form.find('input[name=dishLocation]').val(data.location);
 			form.find('input[value=' + data.canteenId + ']').attr("checked","checked");
-			form.find('textarea[name=dishDescription]').val(data.description);
+			//form.find('textarea[name=dishDescription]').val(data.description);
 			$("#edit-dish-modal").modal('show');
 		},
 		error:function(data){

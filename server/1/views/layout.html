@@ -35,7 +35,8 @@
         <a class="brand" href="/">清华吃货圈</a>
         <div class="nav-collapse collapse">
           <ul class="nav">
-            <li class="active"><a href="/">主页</a></li>
+            <li class="{% if canteenIndex %} active {% endif %}"><a href="/">餐厅列表</a></li>
+            <li class=""><a href="/">关于我们</a></li>
           </ul>
         </div>
         <p class="navbar-text pull-right">

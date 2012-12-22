@@ -14,11 +14,13 @@ var DishController = exports.DishController = function(){
 
 
 DishController.create = function(req,res){
-	var data = req.body;
+	var post = req.body;
+	var data = {};
+	_POST2SCHEMA(post,data);
 	async.waterfall([
 		function(waterfallCallback){
-			if(data.canteenId){
-				Canteen.findById(data.canteenId,waterfallCallback);
+			if(post.canteenId){
+				Canteen.findById(post.canteenId,waterfallCallback);
 			}else{
 				waterfallCallback("No canteenId!");
 			}
@@ -75,12 +77,15 @@ DishController.update = function(req,res){
 						function(previewUrl,waterfallCallback){
 							if(previewUrl)
 								dish.data.previewUrl = previewUrl;
-							dish.data.name = postBody.dishName;
-							dish.data.description = postBody.dishDescription;
-							dish.data.canteenId = postBody.canteenId;
-							dish.data.price = postBody.dishPrice;
-							dish.data.location = postBody.dishLocation;
-							dish.update(waterfallCallback);
+							Canteen.findById(postBody.canteenId,function(err,canteen){
+								if(canteen){
+									dish.data.canteenId = canteen._id;
+									_POST2SCHEMA(postBody,dish.data);
+									dish.update(waterfallCallback);
+								}else{
+									waterfallCallback("No canteen!");
+								}
+							});
 						}
 					],function(err){
 						if(err){
@@ -98,6 +103,19 @@ DishController.update = function(req,res){
 	}
 }
 
+
+function _POST2SCHEMA(post,schema){
+	schema.name = post.dishName;
+	schema.description = post.dishDescription;
+	schema.price = post.dishPrice;
+	schema.location = post.dishLocation;
+	schema.category = post.dishCategory;
+	if(post.dishConstraints){
+		schema.constraints = post.dishConstraints.split(" ");
+	}else{
+		schema.constraints = null;
+	}
+}
 DishController.comment = function(req,res){
 	if(req.params.id && req.body){
 		if(req.session.user){
