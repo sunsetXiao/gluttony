@@ -90,5 +90,5 @@ app.get('/api/dish/:id/',ApiController.dish);
 app.post('/api/canteens/',ApiController.canteenList)
 app.post('/api/canteen/random/',ApiController.randomCanteen);
 
-app.listen(app.get('port'));
+app.listen(app.get('port'),config.host);
 console.log("Server listening on port " + app.get('port'));
