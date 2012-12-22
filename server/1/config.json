@@ -37,12 +37,12 @@
 		    "supportPlatform":["renren"],
 		     "renren":{
 		        "platform": "renren",
-		        "id":"222660",
-		        "key": "c05de2b6a6a341b79a1ddcc708a73b8d",
-		        "secret":"47d4f7af722f46bca399137b7811682d",
+		        "id":"222872",
+		        "key": "9bbb49efb77b42fab4ea41add5f056d3",
+		        "secret":"7a978f196e7c4b7fa7ec88bceb22aeba",
 		        "base_uri":"https://graph.renren.com/",
 		        "authorize_path":"/oauth/authorize",
-		        "redirect_uri":"http://166.111.81.223:3000/auth/renrenCallback",
+		        "redirect_uri":"http://166.111.81.223/auth/renrenCallback",
 		        "access_path":"/oauth/token"
 		     }
 		}
