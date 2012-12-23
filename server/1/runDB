@@ -1,1 +1,1 @@
-~/exec/mongodb/bin/mongod --dbpath ~/exec/mongodb/bin/data/
+sudo ~/exec/mongodb/bin/mongod --fork --dbpath ~/exec/mongodb/bin/data/ --dblog ~/exec/mongodb/var/log.txt
