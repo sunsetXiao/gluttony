@@ -1,0 +1,25 @@
+{
+  "author": {
+    "name": "Rechardchen",
+    "email": "rechardchen@gmail.com"
+  },
+  "name": "node-renren",
+  "description": "Renren.com REST API for node.js",
+  "version": "1.0.0",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/rechardchen/node-renren.git"
+  },
+  "main": "renren.js",
+  "engines": {
+    "node": "*"
+  },
+  "dependencies": {
+    "request": ">=2.9.0"
+  },
+  "devDependencies": {},
+  "readme": "# node-renren -- A simple Renren.com REST API sdk for node.js\r\n\r\n## Install\r\n\r\n<pre>\r\n    npm install node-renren\r\n</pre>\r\n\r\n## Usage\r\n\r\nSee [Renren Rest API](http://wiki.dev.renren.com/wiki/API)\r\n",
+  "readmeFilename": "README.md",
+  "_id": "node-renren@1.0.0",
+  "_from": "node-renren"
+}

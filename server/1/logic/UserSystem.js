@@ -2,7 +2,7 @@ var 	RenrenUser = require('../model/RenrenUser').RenrenUser
   	, 	User = require('../model/User').User
   	,	async = require('async')	
   	,	config = require('../config')
-  	, 	NodeRenren = require('node-renren/renren')
+  	, 	NodeRenren = require('../oauth/node-renren/renren')
   	, 	nodeRenren = new NodeRenren(config.renren)
   	;
 

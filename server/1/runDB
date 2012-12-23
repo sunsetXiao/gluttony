@@ -1,0 +1,1 @@
+~/exec/mongodb/bin/mongod --dbpath ~/exec/mongodb/bin/data/
