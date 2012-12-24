@@ -5,7 +5,10 @@ var Canteen = require("../model/Canteen").Canteen,
 	config = require('../config'),
 	DishLikedIndex = require("../model/index/DishLikedIndex").DishLikedIndex,
 	DishTastedIndex = require("../model/index/DishTastedIndex").DishTastedIndex,
-	UserSystem = require("../logic/UserSystem").UserSystem
+	CanteenLikedIndex = require("../model/index/CanteenLikedIndex").CanteenLikedIndex,
+	UserSystem = require("../logic/UserSystem").UserSystem,
+	DishCommentIndex = require("../model/index/DishCommentIndex").DishCommentIndex,
+	constant = require("../constant/constant.json")
 	;
 
 var CanteenController = exports.CanteenController = function(){};
@@ -14,7 +17,7 @@ var CanteenController = exports.CanteenController = function(){};
 CanteenController.index = function(req,res){
 	Canteen.find({},function(err,canteenList){
 		if (canteenList)
-			res.render('index.html',{canteenList:canteenList,user:req.session.user,canteenIndex:true});
+			res.render('index.html',{canteenList:canteenList,user:req.session.user,canteenIndex:true,slider:constant.slider});
 	});
 }
 
@@ -99,60 +102,77 @@ CanteenController.canteen = function(req,res){
 					var defaultDishInfo = null;
 					var defaultCategory = "其他";
 					async.forEach(items,function(dish,mapCallback){
-						//喜欢的人的数量
-						DishLikedIndex.countByDishId(dish._id,function(err,count){
-							dish.likeNumber = count;
-							//吃过的人的数量
-							DishTastedIndex.countByDishId(dish._id,function(err,tcount){
-								dish.tastedNumber = tcount;
-								if(dish.category){
-									if(!dishInfo[dish.category]){
-										dishInfo[dish.category] = {name:dish.category,dishList:[]};	
+						DishCommentIndex.findByDishId(dish._id,function(err,comments){
+							//console.log(comments);
+							dish.comments = comments;
+							//喜欢的人的数量
+							DishLikedIndex.countByDishId(dish._id,function(err,count){
+								dish.likeNumber = count;
+								//吃过的人的数量
+								DishTastedIndex.countByDishId(dish._id,function(err,tcount){
+									dish.tastedNumber = tcount;
+									if(dish.category){
+										if(!dishInfo[dish.category]){
+											dishInfo[dish.category] = {name:dish.category,dishList:[]};	
+										}
+										dishInfo[dish.category].dishList.push(dish);
+									}else{
+										if(!defaultDishInfo){
+											defaultDishInfo = {name:defaultCategory,dishList:[]};
+										}
+										defaultDishInfo.dishList.push(dish);
 									}
-									dishInfo[dish.category].dishList.push(dish);
-								}else{
-									if(!defaultDishInfo){
-										defaultDishInfo = {name:defaultCategory,dishList:[]};
-									}
-									defaultDishInfo.dishList.push(dish);
-								}
-								//与当前用户的关系
-								if(req.session.user){
-									//这个用户是否喜欢了这个菜
-									DishLikedIndex.hadLiked(req.session.user._id,dish._id,function(err,doc){
-										if(doc) dish.isLike = true;
-										//这个用户是否吃过这个菜
-										DishTastedIndex.hadTasted(req.session.user._id,dish._id,function(err,doc){
-											if(doc) dish.hadTasted = true;
-											//这个用户的其他在平台上的朋友中哪些吃过这个菜
-											UserSystem.getExistedFriends(req.session.user._id,function(err,friends){
-												var tastedFriends = [];
-												tastedFriends = [];
-												async.forEach(friends,function(friend,forEachCallback){
-													DishTastedIndex.hadTasted(friend._id,dish._id,function(err,doc){
-														if(doc) tastedFriends.push(friend);
-														forEachCallback(err);
+									//与当前用户的关系
+									if(req.session.user){
+										//这个用户是否喜欢了这个菜
+										DishLikedIndex.hadLiked(req.session.user._id,dish._id,function(err,doc){
+											if(doc) dish.isLike = true;
+											//这个用户是否吃过这个菜
+											DishTastedIndex.hadTasted(req.session.user._id,dish._id,function(err,doc){
+												if(doc) dish.hadTasted = true;
+												//这个用户的其他在平台上的朋友中哪些吃过这个菜
+												UserSystem.getExistedFriends(req.session.user._id,function(err,friends){
+													var tastedFriends = [];
+													tastedFriends = [];
+													async.forEach(friends,function(friend,forEachCallback){
+														DishTastedIndex.hadTasted(friend._id,dish._id,function(err,doc){
+															if(doc) tastedFriends.push(friend);
+															forEachCallback(err);
+														});
+													},function(err){
+														if(tastedFriends.length > 0){
+															dish.tastedFriends = tastedFriends;
+														}
+														mapCallback(err,dish);
 													});
-												},function(err){
-													if(tastedFriends.length > 0){
-														dish.tastedFriends = tastedFriends;
-													}
-													mapCallback(err,dish);
 												});
 											});
 										});
-									});
-								}else{
-									mapCallback(err,dish);
-								}
+									}else{
+										mapCallback(err,dish);
+									}
+								});
 							});
 						});
+						
 					},function(err){
 						//console.log(dishInfo);
 						canteen.dishes = dishInfo;
 						canteen.defaultDishes = defaultDishInfo;
-						//console.log(canteen);
-						res.render("canteen/canteen.html",{canteen:canteen,user:req.session.user});
+						CanteenLikedIndex.countByCanteenId(canteen._id,function(err,count){
+							canteen.likeNumber = count;
+							if(req.session.user){
+								CanteenLikedIndex.hadLiked(req.session.user._id,canteen._id,function(err,doc){
+									if(doc){
+										canteen.isLike = true;
+									}
+									res.render("canteen/canteen.html",{canteen:canteen,user:req.session.user});
+								});
+							}else{
+								res.render("canteen/canteen.html",{canteen:canteen,user:req.session.user});
+							}
+						});
+						
 					});
 				});
 			}
@@ -160,6 +180,59 @@ CanteenController.canteen = function(req,res){
 				res.send(404);
 			}
 		});
+		
+	}else{
+		res.send(404);
+	}
+}
+
+CanteenController.toggleLike = function(req,res){
+	if(req.params.id){
+		if(req.session.user){
+			async.waterfall([
+				function(waterfallCallback){
+					User.findById(req.session.user._id,function(err,user){
+						if(user){
+							waterfallCallback(err,user);
+						}else{
+							return res.send(403);
+						}
+					});
+				},
+				function(user,waterfallCallback){
+					Canteen.findById(req.params.id,function(err,canteen){
+						if(canteen){
+							waterfallCallback(err,user,canteen);
+						}else{
+							return res.send(404);
+						}
+					});
+				},
+				function(user,canteen,waterfallCallback){
+					CanteenLikedIndex.hadLiked(user._id,canteen._id,function(err,doc){
+						if(doc){
+							CanteenLikedIndex.update(user._id,canteen._id,false,function(err){
+								waterfallCallback(err,false,canteen);
+							});
+						}else{
+							CanteenLikedIndex.update(user._id,canteen._id,true,function(err){
+								waterfallCallback(err,true,canteen);
+							});
+						}
+					});
+				},
+				function(finalLike,canteen,waterfallCallback){
+					CanteenLikedIndex.countByCanteenId(canteen._id,function(err,count){
+						waterfallCallback(err,finalLike,count);
+					});
+				}
+				],function(err,finalLike,finalCount){
+					if(err) res.send(500);
+					else res.send({isLike:finalLike,count:finalCount});
+				});
+		}else{
+			return res.send(401);
+		}
 		
 	}else{
 		res.send(404);

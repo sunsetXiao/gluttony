@@ -13,10 +13,36 @@
   width:960px;
   margin: 0 auto;
 }
+body{
+  padding-top: 40px;
+}
 .navbar-inner .user-avatar{
   width: 20px;
   height: 20px;
 }
+
+#footer{
+  margin-top: 20px;
+  box-shadow: 0 2px 2px #000; 
+}
+#block-content{
+  box-shadow: 0 2px 2px #000; 
+}
+
+/**************************
+* Feedback
+**************************/
+#feedback {
+  position: absolute;
+  top: -20%;
+  right: 120%;
+  box-shadow: 0 0 2px #000;
+  padding: 10px 10px ;
+  background: #fff;
+  display: none;
+}
+
+
     </style>
 {% block extra_css %}
 
@@ -33,13 +59,16 @@
 
         </a>
         <a class="brand" href="/">清华吃货圈</a>
+
         <div class="nav-collapse collapse">
           <ul class="nav">
             <li class="{% if canteenIndex %} active {% endif %}"><a href="/">餐厅列表</a></li>
-            <li class=""><a href="/">关于我们</a></li>
+            <li class="{% if aboutIndex %} active {% endif %}"><a href="/about/">关于</a></li>
           </ul>
+          
         </div>
         <p class="navbar-text pull-right">
+          
         {% if user %}
           <img class="user-avatar" src="{{user.avatarUrl}}" /> <span>{{user.name}}</span>
         {% else %}
@@ -49,17 +78,49 @@
       </div>
     </div>
   </div>
-	<div class="container">
+	<div class="container" id="block-content">
 		
       {% block content %}
       {% endblock %}
       
-	</div>
-  <div id="footer">
-    <div class="container">
-      <p class="muted credit">清华吃货圈</p>
+	
+  </div>
+
+
+  <div id="footer" class="container">
+    <div class="content-background">
+      <div class="row-fluid">
+        <div class="span3">
+          <h2 class="title">清华吃货圈</h2>
+          <p class="remark pull-right">----吃，不仅仅是那么简单</p>
+        </div>
+        <div class="span7">
+          <p class="muted credit">Copyright©2012</p>
+          <p class="muted credit">Contact:zhangty10@gmail.com</p>
+          <p class="muted credit">
+            Built by <a href="http://weibo.com/firstprayer">@Taylor</a> who just wants to give one of his dreams a try.
+          </p>
+       </div>
+       <div class="span2">
+        <div class="pull-right"  style="position:relative;">
+          <div ><a href="/about/" class="title">關於我們</a></div>
+          <div class="clear-fix"></div>
+          <div>
+            <a id="feedback-button" href="javascript:void" class="title">意見反饋</a>
+             <div id="feedback">
+                  <div id="feedback-main">
+                    <textarea class="input-medium" rows="4" placeholder="有任何不满或者疑问，都请告诉我们，让我们做出您更喜欢的产品！" maxlength="300"></textarea>
+                    <button id="feedback-submit" class="btn">提交</button>
+                  </div>
+              </div>
+           </div>
+          <div class="clear-fix"></div>
+        </div>
+       </div>
+      </div>
     </div>
   </div>
+
 <script type="text/javascript" src="/js/jquery-1.8.0.min.js"></script>
 <script type="text/javascript" src="/js/bootstrap.js"></script>
 <script type="text/javascript" src="/js/zebra_dialog.js"></script>
@@ -67,10 +128,51 @@
 <script type="text/javascript" src="/js/underscore.js"></script>
 <script type="text/javascript" src="/js/backbone.js"></script>
 <script type="text/javascript">
+$("#feedback-button").click(function(){
+    $("#feedback").toggle();
+});
+
+$('#feedback-submit').click(function() {
+  var content = $('#feedback-main textarea').val();
+  if (content && content.length > 7) {
+    var json = {'content':content, "fromUrl":window.location.href};
+
+    $.post('/feedback/', json, function(){
+      Util.notifySuccess({content:"我们已经收到您的反馈，感谢支持！我们将会充分考虑你的意见！"});
+    $('#feedback-main textarea').val('');
+    }).error(function() {
+      Util.notifyError();
+    });
+  } else {
+    Util.notifyError({content:"长度不足，请重新输入"});
+  }
+  });
 /*
-_.templateSettings = {
-  interpolate : /\{\{(.+?)\}\}/g
-};*/
+$('body').append('<div id="feedback"><div id="feedback-title-bg"></div><div id="feedback-title">意见反馈</div><div id="feedback-main"><textarea class="input-medium" rows="4" placeholder="有任何不满或者疑问，都请告诉我们，让我们做出您更喜欢的产品！" maxlength="300"></textarea><button id="feedback-submit" class="btn">提交</button></div></div>');
+  $('#feedback').hover(
+    function() {
+      $(this).stop().animate({ right: 0 }, 'slow');
+    },
+    function() {
+      $(this).stop().animate({ right: '-165px' }, 'slow');
+    }
+  );
+
+  $('#feedback-submit').click(function() {
+  var content = $('#feedback-main textarea').val();
+  if (content && content.length > 7) {
+    var json = {'content':content, "send_from_url":window.location.href};
+
+    $.post('/feedback/', json, function(){
+      showNotationDialog({message:"我们已经收到您的反馈，感谢您的意见，我们会尽快给出答复！",type:"OK"});
+    $('#feedback-main textarea').val('');
+    }).error(function() {
+      showNotationDialog({message:"抱歉，服务器无法接收您的反馈内容。",type:"Error"});
+    });
+  } else {
+    showNotationDialog({message:"抱歉，您填写反馈内容为空或太短。",type:"Error"});
+  }
+  });*/
 </script>
 {% block extra_js %}
 

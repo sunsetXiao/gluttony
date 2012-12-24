@@ -5,7 +5,8 @@ var Dish = require('../model/Dish').Dish,
 	Canteen = require("../model/Canteen").Canteen
 	User = require("../model/User").User
 	DishLikedIndex = require("../model/index/DishLikedIndex").DishLikedIndex,
-	DishTastedIndex = require("../model/index/DishTastedIndex").DishTastedIndex
+	DishTastedIndex = require("../model/index/DishTastedIndex").DishTastedIndex,
+	DishCommentIndex = require("../model/index/DishCommentIndex").DishCommentIndex
 	;
 
 var DishController = exports.DishController = function(){
@@ -132,6 +133,7 @@ DishController.comment = function(req,res){
 				function(user,waterfallCallback){
 					Dish.findById(req.params.id,function(err,dish){
 						if(dish){
+							/*
 							var comments = dish.comments;
 							comments.push({
 								time:new Date(),
@@ -141,7 +143,9 @@ DishController.comment = function(req,res){
 							var dishDAO = new Dish(dish);
 							dishDAO.update(function(err){
 								waterfallCallback(err);
-							});
+							});*/
+							var data = {content:req.body.commentContent};
+							DishCommentIndex.create(user,dish._id,data,waterfallCallback);
 						}else{
 							return res.send(404);
 						}

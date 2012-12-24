@@ -1,0 +1,16 @@
+{
+	"slider":[
+		{
+			"imgUrl":"/img/cafe2.jpg",
+			"href":"/canteen/50d6e838b4dd4fc013000099/",
+			"caption":"清青时代咖啡厅",
+			"description":"坐落于观畴园，这个咖啡厅颇具时代气息"
+		},
+		{
+			"imgUrl":"/img/cafe1.jpg",
+			"href":"/canteen/50d6de2cb4dd4fc013000005/",
+			"caption":"独峰咖啡SPR",
+			"description":"坐落在独峰书院的旁边，这家咖啡厅正适合拿着一本心仪的书，一边品味卡布奇诺，一边享受阅读的乐趣"
+		}
+	]
+}

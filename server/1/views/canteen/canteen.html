@@ -47,318 +47,297 @@ width: 75%;
 </style>
 {% endblock %}
 {% block content %}
-<div class="container">
-	<div class="row-fluid content-background">
-		<div class="span3 canteen-sidebar">
-			<h2 class="title"> {{canteen.name}} </h2>
-			<img src="{{canteen.previewUrl}}" class="preivew">
-			
-			{% if canteen.location %}
-				<p class="remark">
-				位置:{{canteen.location}}
-				</p>
-			{% endif %}
-			
-			{% if canteen.phone %}
-				<p class="remark">
-				电话:{{canteen.phone}}
-				</p>
-			{% endif %}
-			{% if canteen.special %}
-
-				{% for item in canteen.special %}
-					<span class="label label-success">{{item}}</span>
-				{% endfor %}
-			{% endif %}
-			<p> {{canteen.description}}</p>
-		</div>
-		<div class="span9">
-			<h3 class="title">食物列表</h3>
-			<hr class="title-splitor" height="40px;">
-			{% for category in canteen.dishes %}
-				<h4>{{category.name}}</h4>
-				{% for dish in category.dishList %}
-					<div class="dish-item span6">
-					<div class="dish-bar row-fluid">
-						<div class="span5">
-							<a href="javascript:void;"  class="dish-name"><h4 class="title">{{dish.name}}</h4></a>
-						</div>
-						<div class="span3">
-							<p class="remark">
-								{% if dish.price %}
-									价格:{{dish.price}}
-								{% endif %}
-							</p>
-							<p class="remark">
-								{% if dish.location %}
-									位置:{{dish.location}}
-								{% endif %}
-							</p>
-						</div>
-						<div class="span4" style="display:table-cell;vertical-align:middle;">
-							<div class="pull-right span12">
-								<a href="javascript:void" data-dish-id="{{dish._id}}" class="like-dish-btn">
-									{% if dish.isLike %}
-										<i class="icon small_like_active"></i>
-									{% else %}
-										<i class="icon small_like_inactive"></i>
-									{% endif %}
-								</a>
-								<span>
-									{{dish.likeNumber}}人喜欢
-								</span>
-							</div>
-							<div class="pull-right span12">
-								<a href="javascript:void" data-dish-id="{{dish._id}}" class="taste-dish-btn">
-									{% if dish.hadTasted %}
-										<i class="icon small_taste_active"></i>
-									{% else %}
-										<i class="icon small_taste_inactive"></i>
-									{% endif %}
-								</a>
-								<span>
-									{{dish.tastedNumber}}人吃过
-								</span>
-							</div>
-						</div>
-					</div>
-					<div class="dish-detail row-fluid">
-						<div class="col">
-							<!--
-							{% if dish.previewUrl %}
-							<div class="imgContainer"><a><img src=" {{ dish.previewUrl }}"></a>
-								<div class="caption">
-									{% if dish.description %}{{dish.description}}
-									{% else %}暂无描述{% endif %}
-								</div>
-							</div>
-							{% else %}
-							<div class="imgContainer"><a><img src=" /img/default-dish.jpg"></a>
-								<div class="caption">
-									{% if dish.description %}{{dish.description}}
-									{% else %}暂无描述{% endif %}
-								</div>
-							</div>
-							{% endif %}-->
-							<p class="remark">
-								{% if dish.price %}
-									价格:{{dish.price}}
-								{% endif %}
-							</p>
-							<p class="remark">
-								{% if dish.location %}
-									位置:{{dish.location}}
-								{% endif %}
-							</p>
-							<p class="remark">
-								{% if dish.description %}
-									{{dish.description}}
-								{% else %}
-									暂无描述
-								{% endif %}
-							</p>
-							<div >
-								{% if dish.tastedFriends %}
-									<p class="remark">你的朋友中</p>
-									<img class="tiny-avatar" src="/img/defaultHead.png">
-									<img class="tiny-avatar" src="/img/defaultHead.png">
-									{% for user in dish.tastedFriends %}
-										<img class="tiny-avatar" src="{{user.avatarUrl}}">
-									{% endfor %}
-									<p class="remark">也吃过这个菜</p>
-								{% endif %}
-							</div>
-							<hr>
-						<!--</div>
-						<div class="span8 col">-->
-							<div class="dish-comment row-fluid">
-								<div class="span2">
-									{% if user%}
-										<div class="avatar">
-											<img src="{{user.avatarUrl}}">
-										</div>
-										<p>{{user.name}}</p>
-									{% else %}
-										<div class="avatar">
-											<img src="/img/defaultHead.png">
-										</div>
-										<p></p>
-									{% endif %}
-								</div>
-								<div class="span10">
-									<form class="form dish-comment-form" action="/dish/{{dish._id}}/comment/" method="post">
-										<textarea rows="3" cols="30" name="commentContent"></textarea>
-									  	<button type="submit" class="btn pull-right">评论</button>
-									</form>
-								</div>
-							</div>
-							{% for comment in dish.comments %}
-								<div class="dish-comment row-fluid">
-									<div class="span2">
-										<div class="avatar">
-											<img src="{{comment.commentor.avatarUrl}}">
-										</div>
-										<p>{{comment.commentor.name}}</p>
-									</div>
-									<div class="span10 content">
-										<div class="">
-											<div class="arrow"></div>
-											{{comment.content}}
-											<div class="pull-right" style="font-size:8px;">{{comment.time|date('Y年n月j日 G:i')}}</div>
-										</div>
-									</div>
-								</div>
-							{% endfor %}
-						</div>
-					</div>
-				</div>
-				{{ loop.cycle("","<div class='clear-fix'></div>") }}
-				{% endfor %}
-				<div class="clearfix"></div>
-			{% endfor %}
-			{% if canteen.defaultDishes %}
-				<h4>{{canteen.defaultDishes.name}}</h4>
-				{% for dish in canteen.defaultDishes.dishList %}
-					<div class="dish-item span6">
-					<div class="dish-bar row-fluid">
-						<div class="span5">
-							<a href="javascript:void;"  class="dish-name"><h4 class="title">{{dish.name}}</h4></a>
-						</div>
-						<div class="span3">
-							<p class="remark">
-								{% if dish.price %}
-									价格:{{dish.price}}
-								{% endif %}
-							</p>
-							<p class="remark">
-								{% if dish.location %}
-									位置:{{dish.location}}
-								{% endif %}
-							</p>
-						</div>
-						<div class="span4" style="display:table-cell;vertical-align:middle;">
-							<div class="pull-right span12">
-								<a href="javascript:void" data-dish-id="{{dish._id}}" class="like-dish-btn">
-									{% if dish.isLike %}
-										<i class="icon small_like_active"></i>
-									{% else %}
-										<i class="icon small_like_inactive"></i>
-									{% endif %}
-								</a>
-								<span>
-									{{dish.likeNumber}}人喜欢
-								</span>
-							</div>
-							<div class="pull-right span12">
-								<a href="javascript:void" data-dish-id="{{dish._id}}" class="taste-dish-btn">
-									{% if dish.hadTasted %}
-										<i class="icon small_taste_active"></i>
-									{% else %}
-										<i class="icon small_taste_inactive"></i>
-									{% endif %}
-								</a>
-								<span>
-									{{dish.tastedNumber}}人吃过
-								</span>
-							</div>
-						</div>
-					</div>
-					<div class="dish-detail row-fluid">
-						<div class="col">
-							<!--
-							{% if dish.previewUrl %}
-							<div class="imgContainer"><a><img src=" {{ dish.previewUrl }}"></a>
-								<div class="caption">
-									{% if dish.description %}{{dish.description}}
-									{% else %}暂无描述{% endif %}
-								</div>
-							</div>
-							{% else %}
-							<div class="imgContainer"><a><img src=" /img/default-dish.jpg"></a>
-								<div class="caption">
-									{% if dish.description %}{{dish.description}}
-									{% else %}暂无描述{% endif %}
-								</div>
-							</div>
-							{% endif %}-->
-							<p class="remark">
-								{% if dish.price %}
-									价格:{{dish.price}}
-								{% endif %}
-							</p>
-							<p class="remark">
-								{% if dish.location %}
-									位置:{{dish.location}}
-								{% endif %}
-							</p>
-							<p class="remark">
-								{% if dish.description %}
-									{{dish.description}}
-								{% else %}
-									暂无描述
-								{% endif %}
-							</p>
-							<div >
-								{% if dish.tastedFriends %}
-									<p class="remark">你的朋友中</p>
-									<img class="tiny-avatar" src="/img/defaultHead.png">
-									<img class="tiny-avatar" src="/img/defaultHead.png">
-									{% for user in dish.tastedFriends %}
-										<img class="tiny-avatar" src="{{user.avatarUrl}}">
-									{% endfor %}
-									<p class="remark">也吃过这个菜</p>
-								{% endif %}
-							</div>
-							<hr>
-						<!--</div>
-						<div class="span8 col">-->
-							<div class="dish-comment row-fluid">
-								<div class="span2">
-									{% if user%}
-										<div class="avatar">
-											<img src="{{user.avatarUrl}}">
-										</div>
-										<p>{{user.name}}</p>
-									{% else %}
-										<div class="avatar">
-											<img src="/img/defaultHead.png">
-										</div>
-										<p></p>
-									{% endif %}
-								</div>
-								<div class="span10">
-									<form class="form dish-comment-form" action="/dish/{{dish._id}}/comment/" method="post">
-										<textarea rows="3" cols="30" name="commentContent"></textarea>
-									  	<button type="submit" class="btn pull-right">评论</button>
-									</form>
-								</div>
-							</div>
-							{% for comment in dish.comments %}
-								<div class="dish-comment row-fluid">
-									<div class="span2">
-										<div class="avatar">
-											<img src="{{comment.commentor.avatarUrl}}">
-										</div>
-										<p>{{comment.commentor.name}}</p>
-									</div>
-									<div class="span10 content">
-										<div class="">
-											<div class="arrow"></div>
-											{{comment.content}}
-											<div class="pull-right" style="font-size:8px;">{{comment.time|date('Y年n月j日 G:i')}}</div>
-										</div>
-									</div>
-								</div>
-							{% endfor %}
-						</div>
-					</div>
-				</div>
-				{{ loop.cycle("","<div class='clear-fix'></div>") }}
-				{% endfor %}
-				<div class="clearfix"></div>
-			{% endif %}
-		</div>
+<div class="content-background">
+	<div class="row-fluid">
+	<div class="span3 canteen-sidebar">
+		<h2 class="title"> {{canteen.name}} </h2>
+		<span>
+			<a href="javascript:void" data-canteen-id="{{canteen._id}}" class="like-canteen-btn" id="like-canteen-btn">
+				{% if canteen.isLike %}
+					<i class="icon small_like_active"></i>
+				{% else %}
+					<i class="icon small_like_inactive"></i>
+				{% endif %}
+			</a>
+			<span>
+				{{canteen.likeNumber}}人喜欢
+			</span>
+			<i class="pull-right"><a name="xn_share" onclick="" type="button" href="javascript:shareClick()"></a></i>
+		</span>
+		<img src="{{canteen.previewUrl}}" class="preivew">
 		
+		{% if canteen.location %}
+			<p class="remark">
+			位置:{{canteen.location}}
+			</p>
+		{% endif %}
+		
+		{% if canteen.phone %}
+			<p class="remark">
+			电话:{{canteen.phone}}
+			</p>
+		{% endif %}
+		{% if canteen.special %}
+			{% for item in canteen.special %}
+				<span class="label label-success">{{item}}</span>
+			{% endfor %}
+		{% endif %}
+		<p> {{canteen.description}}</p>
+	</div>
+	<div class="span9">
+		<h3 class="title">食物列表</h3>
+		<hr class="title-splitor" height="40px;">
+		{% for category in canteen.dishes %}
+			<h4>{{category.name}}</h4>
+			{% for dish in category.dishList %}
+				<div class="dish-item span6">
+				<div class="dish-bar row-fluid">
+					<div class="span4">
+						<a href="javascript:void;"  class="dish-name"><h4 class="title">{{dish.name}}</h4></a>
+					</div>
+					<div class="span4">
+						<p class="remark">
+							{% if dish.price %}
+								价格:{{dish.price}}
+							{% endif %}
+						</p>
+						<p class="remark">
+							{% if dish.location %}
+								位置:{{dish.location}}
+							{% endif %}
+						</p>
+					</div>
+					<div class="span4" style="display:table-cell;vertical-align:middle;">
+						<div class="pull-right span12">
+							<a href="javascript:void" data-dish-id="{{dish._id}}" class="like-dish-btn">
+								{% if dish.isLike %}
+									<i class="icon small_like_active"></i>
+								{% else %}
+									<i class="icon small_like_inactive"></i>
+								{% endif %}
+							</a>
+							<span>
+								{{dish.likeNumber}}人喜欢
+							</span>
+						</div>
+						<div class="pull-right span12">
+							<a href="javascript:void" data-dish-id="{{dish._id}}" class="taste-dish-btn">
+								{% if dish.hadTasted %}
+									<i class="icon small_taste_active"></i>
+								{% else %}
+									<i class="icon small_taste_inactive"></i>
+								{% endif %}
+							</a>
+							<span>
+								{{dish.tastedNumber}}人吃过
+							</span>
+						</div>
+					</div>
+				</div>
+				<div class="dish-detail row-fluid">
+					<div class="col">
+						<p class="remark">
+							{% if dish.price %}
+								价格:{{dish.price}}
+							{% endif %}
+						</p>
+						<p class="remark">
+							{% if dish.location %}
+								位置:{{dish.location}}
+							{% endif %}
+						</p>
+						<p class="remark">
+							{% if dish.description %}
+								{{dish.description}}
+							{% else %}
+								暂无描述
+							{% endif %}
+						</p>
+						<div >
+							{% if dish.tastedFriends %}
+								<p class="remark">你的朋友中</p>
+								<img class="tiny-avatar" src="/img/defaultHead.png">
+								<img class="tiny-avatar" src="/img/defaultHead.png">
+								{% for user in dish.tastedFriends %}
+									<img class="tiny-avatar" src="{{user.avatarUrl}}">
+								{% endfor %}
+								<p class="remark">也吃过这个菜</p>
+							{% endif %}
+						</div>
+						<hr>
+					<!--</div>
+					<div class="span8 col">-->
+						<div class="dish-comment row-fluid">
+							<div class="span2">
+								{% if user%}
+									<div class="avatar">
+										<img src="{{user.avatarUrl}}">
+									</div>
+									<p>{{user.name}}</p>
+								{% else %}
+									<div class="avatar">
+										<img src="/img/defaultHead.png">
+									</div>
+									<p>请先登录</p>
+								{% endif %}
+							</div>
+							<div class="span10">
+								<form class="form dish-comment-form" action="/dish/{{dish._id}}/comment/" method="post">
+									<textarea rows="3" cols="30" name="commentContent"></textarea>
+								  	<button type="submit" class="btn pull-right" {% if !user %}disabled="disabled"{% endif %}>评论</button>
+								</form>
+							</div>
+						</div>
+						{% for comment in dish.comments %}
+							<div class="dish-comment row-fluid">
+								<div class="span2">
+									<div class="avatar">
+										<img src="{{comment.commentor.avatarUrl}}">
+									</div>
+									<p>{{comment.commentor.name}}</p>
+								</div>
+								<div class="span10 content">
+									<div class="">
+										<div class="arrow"></div>
+										{{comment.content}}
+										<div class="pull-right" style="font-size:8px;">{{comment.time|date('Y年n月j日 G:i')}}</div>
+									</div>
+								</div>
+							</div>
+						{% endfor %}
+					</div>
+				</div>
+			</div>
+			{{ loop.cycle("","<div class='clear-fix'></div>") }}
+			{% endfor %}
+			<div class="clearfix"></div>
+		{% endfor %}
+		{% if canteen.defaultDishes %}
+			<h4>{{canteen.defaultDishes.name}}</h4>
+			{% for dish in canteen.defaultDishes.dishList %}
+				<div class="dish-item span6">
+				<div class="dish-bar row-fluid">
+					<div class="span5">
+						<a href="javascript:void;"  class="dish-name"><h4 class="title">{{dish.name}}</h4></a>
+					</div>
+					<div class="span3">
+						<p class="remark">
+							{% if dish.price %}
+								价格:{{dish.price}}
+							{% endif %}
+						</p>
+						<p class="remark">
+							{% if dish.location %}
+								位置:{{dish.location}}
+							{% endif %}
+						</p>
+					</div>
+					<div class="span4" style="display:table-cell;vertical-align:middle;">
+						<div class="pull-right span12">
+							<a href="javascript:void" data-dish-id="{{dish._id}}" class="like-dish-btn">
+								{% if dish.isLike %}
+									<i class="icon small_like_active"></i>
+								{% else %}
+									<i class="icon small_like_inactive"></i>
+								{% endif %}
+							</a>
+							<span>
+								{{dish.likeNumber}}人喜欢
+							</span>
+						</div>
+						<div class="pull-right span12">
+							<a href="javascript:void" data-dish-id="{{dish._id}}" class="taste-dish-btn">
+								{% if dish.hadTasted %}
+									<i class="icon small_taste_active"></i>
+								{% else %}
+									<i class="icon small_taste_inactive"></i>
+								{% endif %}
+							</a>
+							<span>
+								{{dish.tastedNumber}}人吃过
+							</span>
+						</div>
+					</div>
+				</div>
+				<div class="dish-detail row-fluid">
+					<div class="col">
+						<p class="remark">
+							{% if dish.price %}
+								价格:{{dish.price}}
+							{% endif %}
+						</p>
+						<p class="remark">
+							{% if dish.location %}
+								位置:{{dish.location}}
+							{% endif %}
+						</p>
+						<p class="remark">
+							{% if dish.description %}
+								{{dish.description}}
+							{% else %}
+								暂无描述
+							{% endif %}
+						</p>
+						<div >
+							{% if dish.tastedFriends %}
+								<p class="remark">你的朋友中</p>
+								<img class="tiny-avatar" src="/img/defaultHead.png">
+								<img class="tiny-avatar" src="/img/defaultHead.png">
+								{% for user in dish.tastedFriends %}
+									<img class="tiny-avatar" src="{{user.avatarUrl}}">
+								{% endfor %}
+								<p class="remark">也吃过这个菜</p>
+							{% endif %}
+						</div>
+						<hr>
+					<!--</div>
+					<div class="span8 col">-->
+						<div class="dish-comment row-fluid">
+							<div class="span2">
+								{% if user%}
+									<div class="avatar">
+										<img src="{{user.avatarUrl}}">
+									</div>
+									<p>{{user.name}}</p>
+								{% else %}
+									<div class="avatar">
+										<img src="/img/defaultHead.png">
+									</div>
+									<p>请先登录</p>
+								{% endif %}
+							</div>
+							<div class="span10">
+								<form class="form dish-comment-form" action="/dish/{{dish._id}}/comment/" method="post">
+									<textarea rows="3" cols="30" name="commentContent"></textarea>
+								  	<button type="submit" class="btn pull-right" {% if !user %}disabled="disabled"{% endif %}>评论</button>
+								</form>
+							</div>
+						</div>
+						{% for comment in dish.comments %}
+							<div class="dish-comment row-fluid">
+								<div class="span2">
+									<div class="avatar">
+										<img src="{{comment.commentor.avatarUrl}}">
+									</div>
+									<p>{{comment.commentor.name}}</p>
+								</div>
+								<div class="span10 content">
+									<div class="">
+										<div class="arrow"></div>
+										{{comment.content}}
+										<div class="pull-right" style="font-size:8px;">{{comment.time|date('Y年n月j日 G:i')}}</div>
+									</div>
+								</div>
+							</div>
+						{% endfor %}
+					</div>
+				</div>
+			</div>
+			{{ loop.cycle("","<div class='clear-fix'></div>") }}
+			{% endfor %}
+			<div class="clearfix"></div>
+		{% endif %}
+	</div>
 	</div>
 </div>
 
@@ -368,13 +347,25 @@ width: 75%;
 {% endblock %}
 
 {% block extra_js %}
+
 <SCRIPT TYPE="text/javascript" src="/js/jquery.rating.js"></SCRIPT>
 <script type="text/javascript" src="/js/canteen.js"></script>
 <script type="text/javascript" src="/js/jquery.form.js"></script>
+<script type="text/javascript" src="http://widget.renren.com/js/rrshare.js"></script>
 <script type="text/javascript">
-CanteenController.toggleDishLike = function(){
 
+
+function shareClick() {
+	var rrShareParam = {
+		resourceUrl : window.location.href,	//分享的资源Url
+		srcUrl : window.location.href,	//分享的资源来源Url,默认为header中的Referer,如果分享失败可以调整此值为resourceUrl试试
+		pic : window.location.host + '{{canteen.previewUrl}}',		//分享的主题图片Url
+		title : '清华吃货圈-去{{canteen.name}}吧！',		//分享的标题
+		description : '清华吃货圈-去{{canteen.name}}吧！'	//分享的详细描述
+	};
+	rrShareOnclick(rrShareParam);
 }
+
 $(".dish-item").each(function(){
 	var self = $(this);
 	self.find(".dish-bar .dish-name").click(function(){
@@ -382,6 +373,30 @@ $(".dish-item").each(function(){
 	});
 });
 
+$("#like-canteen-btn").click(function(event){
+	var self = $(this);
+	var canteenId = self.attr("data-canteen-id");
+	$.ajax({
+		url:'/canteen/' + canteenId + "/toggleLike/",
+		type:"post",
+		dataType:"json",
+		success:function(res){
+			var i = self.find("i");
+			if(res.isLike){
+				i.addClass("small_like_active");
+				i.removeClass("small_like_inactive");
+			}else{
+				i.removeClass("small_like_active");
+				i.addClass("small_like_inactive");
+			}
+			var span = self.next("span");
+			span.html(res.count + "人喜欢");
+		},
+		error:function(){
+			Util.notifyError();
+		}
+	});
+});
 $(".like-dish-btn").click(function(err){
 	var self = $(this);
 	var dishId = self.attr("data-dish-id");
@@ -406,6 +421,7 @@ $(".like-dish-btn").click(function(err){
 		}
 	})
 });
+
 $(".taste-dish-btn").click(function(err){
 	var self = $(this);
 	var dishId = self.attr("data-dish-id");

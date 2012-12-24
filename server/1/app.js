@@ -10,7 +10,8 @@ var express = require('express'),
      CanteenController = require('./controller/CanteenController').CanteenController,
      DishController = require('./controller/DishController').DishController,
      ApiController = require('./controller/ApiController').ApiController,
-     AuthController = require('./controller/AuthController').AuthController
+     AuthController = require('./controller/AuthController').AuthController,
+     UtilController = require('./controller/UtilController').UtilController
      ;
 
 
@@ -54,6 +55,8 @@ app.configure(function(){
 
 //General
 app.get('/grid/img/:id',ApiController.getImage);
+app.get("/about/",UtilController.about);
+app.post("/feedback/",ApiController.feedback);
 
 //Login
 app.get('/auth/login/',AuthController.login);
@@ -66,6 +69,7 @@ app.get('/',CanteenController.index);
 app.post('/canteens/',CanteenController.create);
 // Render the specific canteen.
 app.get('/canteen/:id/', CanteenController.canteen);
+app.post('/canteen/:id/toggleLike/',CanteenController.toggleLike);
 app.post('/canteen/:id/',CanteenController.update);
 
 

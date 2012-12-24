@@ -2,8 +2,9 @@ var Util = function(){
 	
 }
 
-Util.notifySuccess = function(){
-		new $.Zebra_Dialog("操作成功",{
+Util.notifySuccess = function(data){
+	var content = data.content || '操作成功';
+		new $.Zebra_Dialog(content,{
 			'buttons':  false,
 			'modal':false,
 		    'type':'confirmation',
@@ -12,8 +13,9 @@ Util.notifySuccess = function(){
 		});
 	}
 
-Util.notifyError = function(){
-		new $.Zebra_Dialog("出了点问题，请稍后重试",{
+Util.notifyError = function(data){
+	var content = data.content || '出了点问题，请稍后重试';
+		new $.Zebra_Dialog(content,{
 			'buttons':  false,
 			'modal':false,
 		    'type':'information',

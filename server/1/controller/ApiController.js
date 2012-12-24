@@ -1,6 +1,7 @@
 var FileHandler = require('../model/FileHandler').FileHandler
 	Dish = require('../model/Dish').Dish,
 	Canteen = require('../model/Canteen').Canteen,
+	Feedback = require('../model/Feedback').Feedback
 	async = require('async')
 ;
 
@@ -12,6 +13,24 @@ ApiController.getImage = function(req,res){
 		res.writeHead('200', {'Content-Type': 'image/jpg'});
     	res.end(object,'binary');
 	},req.params.id);
+}
+
+ApiController.feedback = function(req,res){
+	if(req.body && req.body.content && req.body.fromUrl){
+		var data = {
+			"content":req.body.content,
+			"fromUrl":req.body.fromUrl
+		};
+		Feedback.create(data,function(err){
+			if(err) {
+				res.send(500);
+			}else{
+				res.send(200);
+			}
+		});
+	}else{
+		res.send(404);
+	}
 }
 
 ApiController.randomDish = function(req,res){

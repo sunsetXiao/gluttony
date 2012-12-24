@@ -22,4 +22,5 @@ local.properties
 # Batch Files
 .bat
 
-server/1/node-module #nodejs module
+
+server/1/node-modules/* #nodejs module
