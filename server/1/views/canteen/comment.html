@@ -1,0 +1,15 @@
+<div class="dish-comment row-fluid">
+	<div class="span2">
+		<div class="avatar">
+			<img src="{{comment.commentor.avatarUrl}}">
+		</div>
+		<p>{{comment.commentor.name}}</p>
+	</div>
+	<div class="span10 content">
+		<div class="">
+			<div class="arrow"></div>
+			{{comment.content}}
+			<div class="pull-right" style="font-size:8px;">{{comment.time|date('Y年n月j日 G:i')}}</div>
+		</div>
+	</div>
+</div>

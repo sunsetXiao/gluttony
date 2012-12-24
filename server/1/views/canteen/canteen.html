@@ -446,14 +446,31 @@ $(".taste-dish-btn").click(function(err){
 		}
 	})
 });
-$(".dish-comment-form").ajaxForm({
-	success:function(){
-		Util.notifySuccess();
-	},
-	error:function(){
-		Util.notifyError();
-	},
-	clearForm:true
+$(".dish-comment-form").each(function (form){
+	var form = $(this);
+	form.ajaxForm({
+		beforeSubmit:function(data,form,opt){
+			for(var i = 0;i < data.length;i++){
+				if(data[i].name == "commentContent"){
+					if(!data[i].value || data[i].value.length >= 140){
+						Util.notifyError({content:"内容长度不合法！需小于140字"});
+						return false;
+					}
+					break;
+				}
+			}
+			return true;
+		},
+		success:function(data){
+			//var object = JSON.parse(data);
+			form.parent().parent().after(data);
+			Util.notifySuccess();
+		},
+		error:function(){
+			Util.notifyError();
+		},
+		clearForm:true
+	});
 });
 </script>
 

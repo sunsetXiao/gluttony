@@ -80,11 +80,12 @@ app.post('/dish/:id/comment/',DishController.comment);
 app.post('/dish/:id/toggleLike/',DishController.toggleLike);
 app.post('/dish/:id/toggleTasted/',DishController.toggleTasted);
 
-//Admin
-app.get('/admin/',AdminController.index);
-app.get('/admin/canteen/',AdminController.manageCanteen);
-app.get('/admin/dish/',AdminController.manageDish);
-
+if(process.env.NODE_ENV != 'production'){
+  //Admin
+  app.get('/admin/',AdminController.index);
+  app.get('/admin/canteen/',AdminController.manageCanteen);
+  app.get('/admin/dish/',AdminController.manageDish);
+}
 
 //Api
 app.get('/api/randomDish/',ApiController.randomDish);

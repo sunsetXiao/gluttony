@@ -122,6 +122,13 @@ DishController.comment = function(req,res){
 		if(req.session.user){
 			async.waterfall([
 				function(waterfallCallback){
+					if(!req.body.commentContent || req.body.commentContent.length > 140){
+						waterfallCallback("内容长度不合法");
+					}else{
+						waterfallCallback(null);
+					}
+				},
+				function(waterfallCallback){
 					User.findById(req.session.user._id,function(err,user){
 						if(user){
 							waterfallCallback(err,user);
@@ -151,9 +158,13 @@ DishController.comment = function(req,res){
 						}
 					});
 				}
-				],function(err){
-					if(err) res.send(500);
-					else res.send(200);
+				],function(err,doc){
+					if(err || !doc || doc.length <= 0) res.send(500);
+					else {
+						//var html = require('swig').template();
+						console.log(doc);
+						res.render('canteen/comment.html',{comment:doc[0]});
+					}
 				});
 		}else{
 			return res.send(401);
