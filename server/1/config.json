@@ -33,7 +33,7 @@
 		        "url": "127.0.0.1:27017/gluttony?auto_reconnect=true"
 		    },
 		    "port":80,
-		    "host":"166.111.81.223",
+		    "host":"166.111.80.209",
 		    "supportPlatform":["renren"],
 		     "renren":{
 		        "platform": "renren",
@@ -42,7 +42,7 @@
 		        "secret":"7a978f196e7c4b7fa7ec88bceb22aeba",
 		        "base_uri":"https://graph.renren.com/",
 		        "authorize_path":"/oauth/authorize",
-		        "redirect_uri":"http://166.111.81.223/auth/renrenCallback",
+		        "redirect_uri":"http://166.111.80.209/auth/renrenCallback",
 		        "access_path":"/oauth/token"
 		     }
 		}
