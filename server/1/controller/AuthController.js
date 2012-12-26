@@ -36,7 +36,7 @@ AuthController.renrenCallback = function(req,res){
       renrenOAuth.getAccessToken(code, waterfallCallback);
     },
     function(oauthRet, waterfallCallback) {
-    	console.log(oauthRet);
+    	//console.log(oauthRet);
       var platformId = parseInt(oauthRet.user.id),
       	  platformAccessToken = oauthRet.access_token,
       	  refreshToken = oauthRet.refresh_token
@@ -89,7 +89,7 @@ AuthController.renrenCallback = function(req,res){
   ],function(err){
     if (err) 
     	res.send(500);
-    console.log("success");
+    //console.log("success");
     //res.render('index.html',{user:req.session.user});
     res.redirect('/');
   });
