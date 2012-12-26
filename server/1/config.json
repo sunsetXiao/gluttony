@@ -42,7 +42,7 @@
 		        "secret":"7a978f196e7c4b7fa7ec88bceb22aeba",
 		        "base_uri":"https://graph.renren.com/",
 		        "authorize_path":"/oauth/authorize",
-		        "redirect_uri":"http://166.111.80.209/auth/renrenCallback",
+		        "redirect_uri":"http://chihuoq.com/auth/renrenCallback",
 		        "access_path":"/oauth/token"
 		     }
 		}
