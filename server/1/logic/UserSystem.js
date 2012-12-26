@@ -56,10 +56,10 @@ RenrenUserSystem.getFriendsID = function(platformId,accessToken,outerCallback){
 		access_token: accessToken,
     	method:"friends.get"
 	},function(res){
-		console.log(res);
+		//console.log(res);
 		outerCallback(null,res);
 	},function(err){
-		console.log("Get friend list failure");
+		//console.log("Get friend list failure");
 		console.log(err);
 		outerCallback(err);
 	});
