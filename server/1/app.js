@@ -33,7 +33,8 @@ app.configure(function(){
     if(req.method == 'GET' &&
         (req.originalUrl.indexOf("/js/") == 0 ||
          req.originalUrl.indexOf("/css/") == 0||
-         req.originalUrl.indexOf("/img/") == 0))
+         req.originalUrl.indexOf("/img/") == 0 || 
+         req.originalUrl.indexOf("/grid/img") == 0))
       return null;
 
     return '\033[90m' + req.method
