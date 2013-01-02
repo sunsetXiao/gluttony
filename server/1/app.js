@@ -4,7 +4,8 @@ var express = require('express'),
     http = require('http'),
     path = require('path'),
     db = mongo.db(config.db.url,{safe:true}),
-    consolidate = require('consolidate')
+    consolidate = require('consolidate'),
+    RedisStore = require('connect-redis')(express),
 	   app = express(),
      AdminController = require('./controller/AdminController').AdminController,
      CanteenController = require('./controller/CanteenController').CanteenController,
@@ -49,7 +50,7 @@ app.configure(function(){
   app.use(express.bodyParser());
   app.use(express.cookieParser());
 
-/*
+
   app.use(express.session({
     store: new RedisStore({
       host: config.redis.host,
@@ -57,9 +58,9 @@ app.configure(function(){
       db: config.redis.dbName,
       pass: config.redis.auth
     }), 
-    secret: 'cmkxlzvmewpeoqwireofdkmddfdwer3565fldk',
+    secret: 'Gluttony',
     cookie: { maxAge: 7200000} // Session expired in four hours if no user action
-  }));*/
+  }));
   app.use(express.session({
       secret: "Tsinghua Gluttony",
       cookie: { maxAge: 7200000} // Session expired in four hours if no user action

@@ -1,1 +1,1 @@
-sudo NODE_ENV=production forever -l log.txt -o out.log -e err.log start app.js 
+sudo NODE_ENV=production forever -a -l log.txt -o out.log -e err.log start app.js 
