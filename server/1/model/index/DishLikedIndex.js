@@ -49,3 +49,10 @@ DishLikedIndex.countByDishId = function(dishId,outerCallback){
 	}
 	db.DishLikedIndex.count({"dishId":dishId,isLike:true},outerCallback);
 }
+
+DishLikedIndex.removeByDishId = function(dishId,outerCallback){
+	if(typeof(dishId) == "string"){
+		dishId = new ObjectID(dishId);
+	}
+	db.DishLikedIndex.remove({"dishId":dishId},outerCallback);
+}

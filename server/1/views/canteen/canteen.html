@@ -369,7 +369,15 @@ function shareClick() {
 $(".dish-item").each(function(){
 	var self = $(this);
 	self.find(".dish-bar .dish-name").click(function(){
-		self.find(".dish-detail").toggle(500);
+		//self.find(".dish-detail").toggle(500);
+		var speed = 500;
+		var dish_detail = self.find(".dish-detail");
+		dish_detail.slideToggle(speed);
+		//if(dish-detail.is(":visible")){
+		//	dish-detail.slideUp(speed);
+		//}else{
+		//	dish-detail.slideDown(speed);
+		//}
 	});
 });
 

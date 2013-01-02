@@ -280,3 +280,52 @@ DishController.toggleTasted = function(req,res){
 		res.send(404);
 	}
 }
+
+DishController.remove = function(req,res){
+	if(req.params.id){
+		_forceDeleteDish(req.params.id,function(err){
+			if(err) {
+				console.log(err);
+				return res.send(500);
+			}
+			return res.send(200);
+		});
+	}else{
+		res.send(404);
+	}
+}
+
+function _forceDeleteDish(dishId,outerCallback){
+	async.waterfall([
+		function(waterfallCallback){
+			Dish.findById(dishId,waterfallCallback);
+		},
+		function(dish,waterfallCallback){
+			if(dish){
+				async.parallel({
+					"comment": function (parallelCallback){
+						DishCommentIndex.removeByDishId(dish._id,parallelCallback);
+					},
+					"like": function(parallelCallback){
+						DishLikedIndex.removeByDishId(dish._id,parallelCallback);
+					},
+					"taste":function(parallelCallback){
+						DishTastedIndex.removeByDishId(dish._id,parallelCallback);
+					}
+				},function(err){
+					if(err) waterfallCallback(err);
+					else{
+						dish = new Dish(dish);
+						dish.delete(waterfallCallback);
+					}
+				});
+			}else{
+				waterfallCallback("No dish");
+			}
+		}
+		],
+		function(err){
+			outerCallback(err);
+		});
+	
+}

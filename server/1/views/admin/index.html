@@ -44,7 +44,7 @@
 			</div>
 			<div class="span10">
 				<a class="btn" href="javascript:AdminController.editDishForm('<%=dish._id%>');">编辑</a>
-				<a class="btn">删除</a>
+				<a class="btn" href="javascript:AdminController.deleteDish('<%=dish._id%>');">删除</a>
 			</div>
 </script>
 
@@ -411,6 +411,20 @@ AdminController.editCanteenForm = function(id){
 		error:function(data){
 		}
 	});
+}
+
+AdminController.deleteDish = function(id){
+	var url = "/dish/" + id + "/";
+	$.ajax({
+		type:"delete",
+		url:url,
+		success:function(){
+			Util.notifySuccess();
+		},
+		error:function(){
+			Util.notifyError();
+		}
+	})
 }
 function _CANTEEN_SCHEMA2POST(schema,post){
 	post.canteenName = schema.name;

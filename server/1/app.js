@@ -48,6 +48,18 @@ app.configure(function(){
   app.use(express.logger('devx'));
   app.use(express.bodyParser());
   app.use(express.cookieParser());
+
+/*
+  app.use(express.session({
+    store: new RedisStore({
+      host: config.redis.host,
+      port: config.redis.port,
+      db: config.redis.dbName,
+      pass: config.redis.auth
+    }), 
+    secret: 'cmkxlzvmewpeoqwireofdkmddfdwer3565fldk',
+    cookie: { maxAge: 7200000} // Session expired in four hours if no user action
+  }));*/
   app.use(express.session({
       secret: "Tsinghua Gluttony",
       cookie: { maxAge: 7200000} // Session expired in four hours if no user action
@@ -65,28 +77,41 @@ app.get('/auth/renrenCallback',AuthController.renrenCallback);
 
 
 
-//Canteen
-app.get('/',CanteenController.index);
-app.post('/canteens/',CanteenController.create);
-// Render the specific canteen.
-app.get('/canteen/:id/', CanteenController.canteen);
-app.post('/canteen/:id/toggleLike/',CanteenController.toggleLike);
-app.post('/canteen/:id/',CanteenController.update);
 
 
-//Dish
-app.post('/dishes/',DishController.create);
-app.post('/dish/:id/',DishController.update);
-app.post('/dish/:id/comment/',DishController.comment);
-app.post('/dish/:id/toggleLike/',DishController.toggleLike);
-app.post('/dish/:id/toggleTasted/',DishController.toggleTasted);
+
+
+
+
 
 if(process.env.NODE_ENV != 'production'){
   //Admin
   app.get('/admin/',AdminController.index);
   app.get('/admin/canteen/',AdminController.manageCanteen);
   app.get('/admin/dish/',AdminController.manageDish);
+
+  //Canteen management
+  app.post('/canteens/',CanteenController.create);
+  app.post('/canteen/:id/',CanteenController.update);
+
+  //Dish management
+  app.post('/dishes/',DishController.create);
+  app.post('/dish/:id/',DishController.update);
+  app.delete('/dish/:id/',DishController.remove);
 }
+
+//Canteen
+app.get('/',CanteenController.index);
+// Render the specific canteen.
+app.get('/canteen/:id/', CanteenController.canteen);
+app.post('/canteen/:id/toggleLike/',CanteenController.toggleLike);
+
+
+
+//Dish
+app.post('/dish/:id/comment/',DishController.comment);
+app.post('/dish/:id/toggleLike/',DishController.toggleLike);
+app.post('/dish/:id/toggleTasted/',DishController.toggleTasted);
 
 //Api
 app.get('/api/randomDish/',ApiController.randomDish);

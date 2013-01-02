@@ -60,3 +60,11 @@ DishCommentIndex.countByDishId = function(dishId,outerCallback){
 	}
 	db.DishCommentIndex.count({"dishId":dishId},outerCallback);
 }
+
+
+DishCommentIndex.removeByDishId = function(dishId,outerCallback){
+	if(typeof(dishId) == "string"){
+		dishId = new ObjectID(dishId);
+	}
+	db.DishCommentIndex.remove({"dishId":dishId},outerCallback);
+}
