@@ -61,10 +61,10 @@ app.configure(function(){
     secret: 'Gluttony',
     cookie: { maxAge: 7200000} // Session expired in four hours if no user action
   }));
-  app.use(express.session({
+  /*app.use(express.session({
       secret: "Tsinghua Gluttony",
       cookie: { maxAge: 7200000} // Session expired in four hours if no user action
-    }));
+    }));*/
 });
 
 //General

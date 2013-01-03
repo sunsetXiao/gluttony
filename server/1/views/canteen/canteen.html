@@ -359,7 +359,7 @@ function shareClick() {
 	var rrShareParam = {
 		resourceUrl : window.location.href,	//分享的资源Url
 		srcUrl : window.location.href,	//分享的资源来源Url,默认为header中的Referer,如果分享失败可以调整此值为resourceUrl试试
-		pic : window.location.host + '{{canteen.previewUrl}}',		//分享的主题图片Url
+		pic : "http://" + window.location.host + '{{canteen.previewUrl}}',		//分享的主题图片Url
 		title : '清华吃货圈-去{{canteen.name}}吧！',		//分享的标题
 		description : '清华吃货圈-去{{canteen.name}}吧！'	//分享的详细描述
 	};
