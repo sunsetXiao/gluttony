@@ -8,6 +8,6 @@ var UtilController = exports.UtilController = function(){};
 
 
 UtilController.about = function(req,res){
-	res.render('about.html',{aboutIndex:true});
+	res.render('about.html',{aboutIndex:true,user:req.session.user});
 }
 
