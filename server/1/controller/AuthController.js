@@ -94,3 +94,8 @@ AuthController.renrenCallback = function(req,res){
     res.redirect('/');
   });
 }
+
+AuthController.logout = function(req,res){
+  delete req.session.user;
+  res.redirect('/');
+}

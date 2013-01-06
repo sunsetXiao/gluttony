@@ -17,7 +17,7 @@
 		        "auth": ""
 		      },
 		    "port":3000,
-		    "host":"59.66.138.107",
+		    "host":"127.0.0.1",
 		    "supportPlatform":["renren"],
 		     "renren":{
 		        "platform": "renren",

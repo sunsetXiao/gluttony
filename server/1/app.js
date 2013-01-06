@@ -50,8 +50,15 @@ app.configure(function(){
   app.use(express.bodyParser());
   app.use(express.cookieParser());
 
-
-  app.use(express.session({
+/*
+  */
+  if(process.env.NODE_ENV != 'production'){
+    app.use(express.session({
+        secret: "Tsinghua Gluttony",
+        cookie: { maxAge: 7200000} // Session expired in four hours if no user action
+      }));
+  }else{
+    app.use(express.session({
     store: new RedisStore({
       host: config.redis.host,
       port: config.redis.port,
@@ -61,11 +68,7 @@ app.configure(function(){
     secret: 'Gluttony',
     cookie: { maxAge: 7200000} // Session expired in four hours if no user action
   }));
-/*
-  app.use(express.session({
-      secret: "Tsinghua Gluttony",
-      cookie: { maxAge: 7200000} // Session expired in four hours if no user action
-    }));*/
+  }
 });
 
 //General
@@ -76,7 +79,8 @@ app.post("/feedback/",ApiController.feedback);
 //Login
 app.get('/auth/login/',AuthController.login);
 app.get('/auth/renrenCallback',AuthController.renrenCallback);
-
+//Logout
+app.get('/auth/logout/',AuthController.logout);
 
 
 
