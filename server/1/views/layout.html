@@ -75,7 +75,7 @@ body{
         <p class="navbar-text pull-right">
           
         {% if user %}
-          <img class="user-avatar" src="{{user.avatarUrl}}" /> <span>{{user.name}}</span><span><a href="/auth/logout/">退出登录</a></span>
+          <img class="user-avatar" src="{{user.avatarUrl}}" /> <span>{{user.name}}</span><span><a href="/auth/logout/" class="navbar-link" style="margin-left:20px;">退出登录</a></span>
         {% else %}
           <a href="/auth/login/?platform=renren" class="navbar-link"><img src="/img/ico_renren_16x16.png" class="renren-logo">以人人账号登陆</a>
         {% endif %}
